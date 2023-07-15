@@ -8,9 +8,9 @@ const AdminPage = () => {
       <h1>Admin Dashboard</h1>
       <AdminDashboard />
       {/* <SubNavigation /> */}
-      <Link href={"/user-management"}>User Management</Link>
-      <Link href={"/message-center"}>Message Center</Link>
-      <Link href={"/project-list"}>Project List</Link>
+      <Link href={"/admin/user-management"}>User Management</Link>
+      <Link href={"/admin/message-center"}>Message Center</Link>
+      <Link href={"/admin/project-list"}>Project List</Link>
     </div>
   );
 };
