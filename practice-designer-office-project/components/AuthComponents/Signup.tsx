@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
+import { authContextInterface } from "@/interfaces/auth-context-interface";
+import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 const Signup = () => {
+  // auth context
+  const { signUp, createLoading, createError } =
+    useAuth() as authContextInterface;
+
+  // refs
   const emailInputRef = React.useRef<HTMLInputElement>(null);
   const passwordInputRef = React.useRef<HTMLInputElement>(null);
   const confirmPasswordInputRef = React.useRef<HTMLInputElement>(null);
@@ -34,6 +42,10 @@ const Signup = () => {
         error: true,
         content: "Passwords do not match",
       });
+    } else {
+      if (enteredEmail !== undefined && enteredPassword !== undefined) {
+        await signUp(enteredEmail, enteredPassword);
+      }
     }
 
     // enteredEmail, enteredPassword, enteredConfirmPassword => send to API
@@ -45,7 +57,11 @@ const Signup = () => {
           className="w-full bg-white rounded-lg shadow dark:border
          md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
         >
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+          {createLoading && <LoadingSpinner />}
+          {createLoading && (
+            <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+          )}
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8 relative">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create and account
             </h1>
@@ -137,7 +153,21 @@ const Signup = () => {
                   </label>
                 </div>
               </div>
-              {error.error && <p className={"text-red-600"}>{error.content}</p>}
+              {error.error && (
+                <div className="flex items-center justify-center">
+                  <p className="text-red-500 text-sm font-medium">
+                    {error.content}
+                  </p>
+                </div>
+              )}
+              {createError && (
+                <div className="flex items-center justify-center">
+                  <p className="text-red-500 text-sm font-medium">
+                    {createError.message}
+                  </p>
+                </div>
+              )}
+
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none 
@@ -146,6 +176,7 @@ const Signup = () => {
               >
                 Create an account
               </button>
+
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <Link
