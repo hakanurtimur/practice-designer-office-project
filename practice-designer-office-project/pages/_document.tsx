@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Document() {
   return (
-    <Html lang="en" className={"ligth"}>
+    <Html lang="en" className={"bg-gray-50"}>
       <Head />
       <body>
         <Main />

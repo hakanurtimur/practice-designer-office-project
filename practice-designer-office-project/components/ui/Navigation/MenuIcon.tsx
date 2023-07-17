@@ -3,7 +3,7 @@ import React from "react";
 const MenuIcon = () => {
   return (
     <svg
-      className="w-5 h-5 text-primary-900"
+      className="w-5 h-5 text-primary-600"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

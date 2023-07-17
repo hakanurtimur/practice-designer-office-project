@@ -37,6 +37,7 @@ const MenuSample: React.FC<{
                dark:hover:bg-gray-700 dark:hover:text-primary-500
                dark:border-gray-700"
           aria-current="page"
+          onClick={item.function}
         >
           {item.title}
         </Link>
