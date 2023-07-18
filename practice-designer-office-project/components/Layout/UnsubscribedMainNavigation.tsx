@@ -25,16 +25,16 @@ const UnsubscribedMainNavigation = () => {
     {
       title: "Login",
       function: async () => {
-        await router.push("/auth/login");
         await console.log("Login");
+        await router.push("/auth/login");
       },
       id: uuidv4(),
     },
     {
       title: "Sign up",
       function: async () => {
-        await router.push("/auth/signup");
         await console.log("Sign up");
+        await router.push("/auth");
       },
       id: uuidv4(),
     },

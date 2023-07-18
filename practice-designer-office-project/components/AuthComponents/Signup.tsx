@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
+import { useRouter } from "next/router";
 const Signup = () => {
   // auth context
-  const { signUp, createLoading, createError } =
+  const { signUp, createLoading, createError, userRole, user } =
     useAuth() as authContextInterface;
-
+  // router
+  const router = useRouter();
   // refs
   const emailInputRef = React.useRef<HTMLInputElement>(null);
   const passwordInputRef = React.useRef<HTMLInputElement>(null);
@@ -16,6 +18,7 @@ const Signup = () => {
     error: false,
     content: "",
   });
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current?.value;
@@ -47,9 +50,20 @@ const Signup = () => {
         await signUp(enteredEmail, enteredPassword);
       }
     }
-
     // enteredEmail, enteredPassword, enteredConfirmPassword => send to API
   };
+
+  useEffect(() => {
+    async function pushToHome() {
+      if (!createError && !createLoading && user && userRole) {
+        await router.push(`/${userRole}`);
+      } else {
+        return;
+      }
+    }
+    pushToHome().then();
+  }, [createError, createLoading]);
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-start mt-20 px-6 py-8 mx-auto md:h-screen lg:py-0">

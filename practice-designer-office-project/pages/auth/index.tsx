@@ -1,11 +1,8 @@
 import React from "react";
+import Signup from "@/components/AuthComponents/Signup";
 
-const AuthPage = () => {
-  return (
-    <div>
-      <h1>Auth Page</h1>
-    </div>
-  );
+const SignupPage = () => {
+  return <Signup />;
 };
 
-export default AuthPage;
+export default SignupPage;

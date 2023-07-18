@@ -1,13 +1,26 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { authContextInterface } from "@/interfaces/auth-context-interface";
+import { useAuth } from "@/context/auth-context";
+import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  // auth context
+  const { login, loginLoading, loginError, user, userRole } =
+    useAuth() as authContextInterface;
+
+  // router
+  const router = useRouter();
+
+  // refs
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState({
     error: false,
     content: "",
   });
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current?.value;
@@ -28,13 +41,32 @@ const Login = () => {
       });
     }
     // enteredEmail, enteredPassword => send to API
-    console.log(enteredEmail, enteredPassword);
+    if (enteredEmail !== undefined && enteredPassword !== undefined) {
+      await login(enteredEmail, enteredPassword);
+    }
   };
 
+  useEffect(() => {
+    async function pushToHome() {
+      if (!loginError && !loginLoading && user && userRole) {
+        await router.push(`/${userRole}`);
+      } else {
+        return;
+      }
+    }
+    pushToHome().then();
+  }, [loginError, loginLoading]);
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-start mt-20 px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div
+          className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0
+         dark:bg-gray-800 dark:border-gray-700"
+        >
+          {loginLoading && <LoadingSpinner />}
+          {loginLoading && (
+            <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+          )}
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
@@ -102,7 +134,18 @@ const Login = () => {
                 </Link>
               </div>
               {error.error && (
-                <p className="text-red-500">{error.content}</p> // error message
+                <div className="flex items-center justify-center">
+                  <p className="text-red-500 text-sm font-medium">
+                    {error.content}
+                  </p>
+                </div>
+              )}
+              {loginError && (
+                <div className="flex items-center justify-center">
+                  <p className="text-red-500 text-sm font-medium">
+                    {loginError.message}
+                  </p>
+                </div>
               )}
               <button
                 type="submit"
@@ -113,7 +156,7 @@ const Login = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <Link
-                  href="/auth/signup"
+                  href="/auth"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
