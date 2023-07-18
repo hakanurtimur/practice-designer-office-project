@@ -29,17 +29,23 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       keyframes: {
-        "fade-in-down": {
+        "slide-right": {
           "0%": {
-            opacity: "0",
+            transform: "translateX(0)",
+            visibility: "hidden",
+          },
+          "50%": {
+            transform: "translateX(0)",
+            visibility: "visible",
           },
           "100%": {
-            opacity: "1",
+            transform: "translateX(500%)",
+            visibility: "hidden",
           },
         },
       },
       animation: {
-        "fade-in-down": "fade-in-down 0.5s ease-out forwards",
+        "slide-right": "slide-right 0.5s ease-out forwards",
       },
     },
   },

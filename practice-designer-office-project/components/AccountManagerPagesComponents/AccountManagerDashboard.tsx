@@ -1,14 +1,7 @@
 import React from "react";
 
 const AccountManagerDashboard = () => {
-  return (
-    <div>
-      <h1>Account Manager Dashboard</h1>
-      {/* <RequestList /> */}
-      {/* <DesignerApproval /> */}
-      {/* <AssignedUserList /> */}
-    </div>
-  );
+  return <h1> Account Manager Dashboard </h1>;
 };
 
 export default AccountManagerDashboard;
