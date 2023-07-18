@@ -13,3 +13,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </AuthContextProvider>
   );
 }
+
+//TODO: add protector routes
