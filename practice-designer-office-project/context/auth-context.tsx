@@ -5,6 +5,7 @@ import {
   useAuthState,
   useSignOut,
   useSignInWithEmailAndPassword,
+  useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
@@ -31,6 +32,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [signout, signOutLoading, signOutError] = useSignOut(auth);
   const [logIn, loggedInUser, loginLoading, loginError] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sendingPassword, sendPasswordError] =
+    useSendPasswordResetEmail(auth);
 
   // signup function
   const signUp = async (email: string, password: string) => {
@@ -55,6 +58,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   // login function
   const login = async (email: string, password: string) => {
     return await logIn(email, password);
+  };
+
+  // send password reset email
+  const sendPasswordReset = async (email: string) => {
+    return await sendPasswordResetEmail(email);
   };
 
   // fetch users from firestore for role claims we can do it also in the with rules for now we do it here
@@ -99,6 +107,10 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         loggedInUser,
         loginLoading,
         loginError,
+        // send password reset email states and function
+        sendPasswordReset,
+        sendingPassword,
+        sendPasswordError,
         // user role
         userRole,
       }}

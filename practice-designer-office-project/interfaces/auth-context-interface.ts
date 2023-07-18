@@ -22,11 +22,11 @@ export interface authContextInterface {
   loginError: AuthError | undefined;
   loggedInUser: UserCredential | undefined;
   loginLoading: boolean;
+
+  // reset password function and its states
+  sendPasswordReset: (email: string) => Promise<boolean>;
+  sendPasswordError: Error | AuthError | undefined;
+  sendingPassword: boolean;
   // userRole
   userRole: string | undefined;
-}
-export interface fetchedUser {
-  id: string;
-  createdAt: string;
-  role: string;
 }
