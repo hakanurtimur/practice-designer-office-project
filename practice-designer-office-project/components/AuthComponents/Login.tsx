@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import { useAuth } from "@/context/auth-context";
@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 const Login = () => {
   // auth context
-  const { login, loginLoading, loginError, user, userRole } =
+  const { login, loginLoading, loginError, user, getUserRole } =
     useAuth() as authContextInterface;
 
   // router
@@ -45,8 +45,15 @@ const Login = () => {
       await login(enteredEmail, enteredPassword);
     }
   };
+  const handleUserRole = async () => {
+    if (user) {
+      const userRole = await getUserRole();
+      await router.push(`/${userRole}`);
+    }
+  };
 
-  useEffect(() => {
+  handleUserRole().then();
+  /*  useEffect(() => {
     async function pushToHome() {
       if (!loginError && !loginLoading && user && userRole) {
         await router.push(`/${userRole}`);
@@ -55,7 +62,7 @@ const Login = () => {
       }
     }
     pushToHome().then();
-  }, [loginError, loginLoading]);
+  }, [loginError, loginLoading]);*/
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-start mt-20 px-6 py-8 mx-auto md:h-screen lg:py-0">

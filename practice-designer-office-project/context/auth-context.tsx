@@ -7,8 +7,17 @@ import {
   useSignInWithEmailAndPassword,
   useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { authContextInterface } from "@/interfaces/auth-context-interface";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import {
+  authContextInterface,
+  fetchedUser,
+} from "@/interfaces/auth-context-interface";
 
 const AuthContext = createContext<authContextInterface | null>(null);
 
@@ -19,8 +28,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const collectionRef = collection(db, "myUsers");
 
   // fetch users from firestore for role claims we can do it also in the with rules for now we do it here
-  const [userRole, setUserRole] = React.useState<string>("");
-
   // Hooks for authentication
   const [user, loading, error] = useAuthState(auth);
   const [
@@ -34,6 +41,19 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sendingPassword, sendPasswordError] =
     useSendPasswordResetEmail(auth);
+  const [allUsers, setAllUsers] = React.useState<fetchedUser[] | undefined>([]);
+
+  // get All users
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
+      const items: object[] = [];
+      querySnapshot.forEach((doc) => {
+        items.push(doc.data());
+      });
+      setAllUsers(items as fetchedUser[] | undefined);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // signup function
   const signUp = async (email: string, password: string) => {
@@ -67,25 +87,16 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   // fetch users from firestore for role claims we can do it also in the with rules for now we do it here
 
-  useEffect(() => {
+  const getUserRole = async () => {
     if (!collectionRef) return;
     if (!user) return;
-    const getUserRole = () => {
-      const docRef = doc(collectionRef, user?.uid);
-      getDoc(docRef)
-        .then((docSnap) => {
-          if (docSnap.exists()) {
-            setUserRole(docSnap.data()?.role);
-          }
-        })
-        .then(() => {
-          console.log(userRole);
-        });
-    };
-
-    return getUserRole();
-  }, [user, collectionRef]);
-
+    const docRef = doc(collectionRef, user.uid);
+    const userData = await getDoc(docRef);
+    if (!userData) return;
+    const userRole = userData.data()?.role;
+    return userRole as string;
+  };
+  // fetch all users for admin
   return (
     <AuthContext.Provider
       value={{
@@ -112,7 +123,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         sendingPassword,
         sendPasswordError,
         // user role
-        userRole,
+        getUserRole,
+        // all users for admin
+        allUsers,
       }}
     >
       {children}

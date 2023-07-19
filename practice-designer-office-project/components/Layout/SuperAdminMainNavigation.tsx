@@ -10,23 +10,23 @@ const SuperAdminMainNavigation = () => {
   const contentArray = [
     {
       title: "Dashboard",
-      link: "",
+      link: "/admin",
     },
     {
       title: "Project List",
-      link: "",
+      link: "/admin/project-list",
     },
     {
       title: "Profile Setting",
-      link: "",
+      link: "/admin",
     },
     {
       title: "Message Center",
-      link: "",
+      link: "/admin/message-center",
     },
     {
       title: "User Management",
-      link: "",
+      link: "/admin/user-management",
     },
   ];
 

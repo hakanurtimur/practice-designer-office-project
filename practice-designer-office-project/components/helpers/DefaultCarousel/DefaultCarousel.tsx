@@ -36,7 +36,7 @@ const DefaultCarousel: React.FC<CarouselProps> = ({ items }) => {
           <div className={"text-center mb-1"}>
             <p>{item.content}</p>
           </div>
-          <Link href={`/${item.link}`}>
+          <Link href={`${item.link}`}>
             <img
               className={"w-40 h-40 bg-gray-300 rounded-full"}
               src={item.imageUrl}

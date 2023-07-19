@@ -6,7 +6,7 @@ import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
 const Signup = () => {
   // auth context
-  const { signUp, createLoading, createError, userRole, user } =
+  const { signUp, createLoading, createError, user } =
     useAuth() as authContextInterface;
   // router
   const router = useRouter();
@@ -55,8 +55,8 @@ const Signup = () => {
 
   useEffect(() => {
     async function pushToHome() {
-      if (!createError && !createLoading && user && userRole) {
-        await router.push(`/${userRole}`);
+      if (!createError && !createLoading && user) {
+        await router.push(`/client`);
       } else {
         return;
       }

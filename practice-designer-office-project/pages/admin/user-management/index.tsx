@@ -1,10 +1,10 @@
 import React from "react";
+import UserList from "@/components/SuperAdminPagesComponents/UserManagement/UserList";
 
 const UserManagementPage = () => {
   return (
     <div>
-      <h1>User Management Page</h1>
-      {/* <UserManagement /> */}
+      <UserList />
     </div>
   );
 };

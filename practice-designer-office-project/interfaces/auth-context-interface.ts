@@ -28,5 +28,13 @@ export interface authContextInterface {
   sendPasswordError: Error | AuthError | undefined;
   sendingPassword: boolean;
   // userRole
-  userRole: string | undefined;
+  getUserRole: () => Promise<string | undefined>;
+  // all users
+  allUsers: fetchedUser[] | undefined;
+}
+
+export interface fetchedUser {
+  id: string;
+  createdAt: string;
+  role: string;
 }

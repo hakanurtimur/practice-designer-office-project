@@ -14,7 +14,7 @@ const MenuSample: React.FC<{
     return (
       <li key={index}>
         <Link
-          href="/"
+          href={`${item.link}`}
           className="block py-2 pl-3 pr-4 text-primary-600 border-b border-gray-100
                dark:text-primary-500 hover:text-primary-900
                dark:hover:bg-gray-700 dark:hover:text-primary-500
