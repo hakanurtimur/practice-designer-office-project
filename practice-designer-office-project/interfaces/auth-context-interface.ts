@@ -27,6 +27,16 @@ export interface authContextInterface {
   sendPasswordReset: (email: string) => Promise<boolean>;
   sendPasswordError: Error | AuthError | undefined;
   sendingPassword: boolean;
+  //update user profile
+  updateUserProfile: ({
+    displayName,
+    photoURL,
+  }: {
+    displayName?: string | undefined;
+    photoURL?: string | undefined;
+  }) => Promise<void>;
+  updateError: Error | AuthError | undefined;
+  updating: boolean;
   // userRole
   getUserRole: () => Promise<string | undefined>;
   // all users
@@ -34,7 +44,8 @@ export interface authContextInterface {
 }
 
 export interface fetchedUser {
-  id: string;
-  createdAt: string;
+  name: string;
+  email: string;
+  photoURL: string;
   role: string;
 }

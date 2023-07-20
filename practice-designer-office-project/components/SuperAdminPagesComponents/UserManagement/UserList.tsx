@@ -21,10 +21,10 @@ const UserList = () => {
     allUsers &&
     allUsers.map((user) => {
       return {
-        name: user.id,
-        email: user.id,
+        name: user.name,
+        email: user.email,
         totalReqs: "100",
-        imageSrc: "/user-pen.png",
+        imageSrc: user.photoURL,
       };
     });
 

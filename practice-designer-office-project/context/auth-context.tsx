@@ -6,6 +6,7 @@ import {
   useSignOut,
   useSignInWithEmailAndPassword,
   useSendPasswordResetEmail,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import {
   collection,
@@ -13,6 +14,7 @@ import {
   getDoc,
   onSnapshot,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   authContextInterface,
@@ -29,6 +31,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   // fetch users from firestore for role claims we can do it also in the with rules for now we do it here
   // Hooks for authentication
+  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
   const [user, loading, error] = useAuthState(auth);
   const [
     createUserWithEmailAndPassword,
@@ -63,11 +66,32 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     );
     if (!userCredential) return;
     const newUser = {
-      id: userCredential?.user?.uid, // get user uid
+      id: userCredential.user.uid, // get user uid
       createdAt: new Date().toISOString(),
       role: "client",
+      name: "",
+      email: userCredential.user.email,
+      photoURL: "",
     };
     return await setDoc(doc(collectionRef, newUser.id), newUser);
+  };
+
+  // update user profile
+
+  const updateUserProfile = async ({
+    displayName,
+    photoURL,
+  }: {
+    displayName?: string | undefined;
+    photoURL?: string | undefined;
+  }) => {
+    if (!user) return;
+    const updatedUser = {
+      name: displayName,
+      photoURL: photoURL,
+    };
+    await updateProfile({ displayName, photoURL });
+    return await updateDoc(doc(collectionRef, user.uid), updatedUser);
   };
 
   // signOut function
@@ -122,6 +146,10 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         sendPasswordReset,
         sendingPassword,
         sendPasswordError,
+        // update user profile
+        updateUserProfile,
+        updating,
+        updateError,
         // user role
         getUserRole,
         // all users for admin

@@ -18,7 +18,7 @@ const SuperAdminMainNavigation = () => {
     },
     {
       title: "Profile Setting",
-      link: "/admin",
+      link: "/admin/profile",
     },
     {
       title: "Message Center",

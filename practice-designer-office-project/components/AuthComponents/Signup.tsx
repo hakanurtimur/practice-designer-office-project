@@ -56,12 +56,12 @@ const Signup = () => {
   useEffect(() => {
     async function pushToHome() {
       if (!createError && !createLoading && user) {
-        await router.push(`/client`);
+        await router.push(`/client/profile/update`);
       } else {
         return;
       }
     }
-    pushToHome().then();
+    pushToHome().then(); // maybe add alert
   }, [createError, createLoading]);
 
   return (

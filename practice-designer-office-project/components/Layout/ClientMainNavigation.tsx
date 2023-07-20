@@ -10,19 +10,19 @@ const ClientMainNavigation = () => {
   const contentArray = [
     {
       title: "Dashboard",
-      link: "",
+      link: "/client",
     },
     {
       title: "Requests",
-      link: "",
+      link: "/client/requests",
     },
     {
       title: "Profile Setting",
-      link: "",
+      link: "/client/profile",
     },
     {
       title: "Message Center",
-      link: "",
+      link: "/",
     },
   ];
 
