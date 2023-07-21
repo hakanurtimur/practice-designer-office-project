@@ -24,6 +24,10 @@ const ClientMainNavigation = () => {
       title: "Message Center",
       link: "/",
     },
+    {
+      title: "New Request",
+      link: "/client/new-request",
+    },
   ];
 
   const buttonArray = [
