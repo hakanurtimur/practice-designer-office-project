@@ -14,7 +14,7 @@ const ClientMainNavigation = () => {
     },
     {
       title: "Requests",
-      link: "/client/requests",
+      link: "/client/request-list",
     },
     {
       title: "Profile Setting",

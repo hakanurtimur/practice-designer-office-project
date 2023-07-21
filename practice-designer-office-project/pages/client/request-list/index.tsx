@@ -1,9 +1,10 @@
 import React from "react";
+import RequestList from "@/components/ClientPagesComponent/RequestsList/RequestList";
 
 const RequestListPage = () => {
   return (
     <div>
-      <h1>Request List</h1>
+      <RequestList />
     </div>
   );
 };

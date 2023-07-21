@@ -31,7 +31,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth() as authContextInterface;
   // hooks for requests
   if (!user) return null;
-  const collectionRef = collection(db, user.uid);
+  const collectionRef = collection(db, "requests");
   const [snapshot, loading, error] = useCollection(collectionRef);
   // getting documents
   const value = snapshot?.docs.map((doc) => doc.data());
