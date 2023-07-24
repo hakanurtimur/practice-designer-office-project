@@ -1,11 +1,8 @@
 import React from "react";
+import AccountManagerUpdateProfile from "@/components/AccountManagerPagesComponents/Profile/AccountManagerUpdateProfile";
 
-const UpdateProfilePage = () => {
-  return (
-    <div>
-      <h1>Update Profile</h1>
-    </div>
-  );
+const AccountManagerUpdateProfilePage = () => {
+  return <AccountManagerUpdateProfile />;
 };
 
-export default UpdateProfilePage;
+export default AccountManagerUpdateProfilePage;

@@ -1,7 +1,8 @@
 import React from "react";
+import AccountManagerProfile from "@/components/AccountManagerPagesComponents/Profile/AccountManagerProfile";
 
-const ProfilePage = () => {
-  return <div>AM Profile</div>;
+const AccountManagerProfilePage = () => {
+  return <AccountManagerProfile />;
 };
 
-export default ProfilePage;
+export default AccountManagerProfilePage;
