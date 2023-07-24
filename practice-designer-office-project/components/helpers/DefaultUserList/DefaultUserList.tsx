@@ -6,7 +6,7 @@ const DefaultUserList: React.FC<{
         name: string;
         email: string;
         imageSrc: string;
-        totalReqs: string;
+        assignedAmName: string;
       }[]
     | undefined;
   searchTerm: string;
@@ -85,11 +85,11 @@ const DefaultUserList: React.FC<{
               </div>
               <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  {user.totalReqs
+                  {user.assignedAmName
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
                     <>
-                      {user.totalReqs
+                      {user.assignedAmName
                         .split(new RegExp(`(${props.searchTerm})`, "gi"))
                         .map((part, index) => (
                           <React.Fragment key={index}>
@@ -105,7 +105,7 @@ const DefaultUserList: React.FC<{
                         ))}
                     </>
                   ) : (
-                    user.totalReqs
+                    user.assignedAmName
                   )}
                 </p>
               </div>

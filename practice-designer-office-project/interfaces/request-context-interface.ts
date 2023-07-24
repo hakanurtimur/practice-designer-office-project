@@ -12,6 +12,12 @@ export interface requestContextInterface {
   creatingLoading: boolean;
   // --- Variables ---
   thisClientsRequests: DocumentData[] | undefined;
+
+  // AM SIDE
+  // --- Functions ---
+  // states
+  // --- Variables ---
+  myComingRequests: DocumentData[] | undefined;
 }
 
 export interface requestInterface {

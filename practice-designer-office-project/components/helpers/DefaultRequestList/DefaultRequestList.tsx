@@ -2,6 +2,7 @@ import React from "react";
 import { DocumentData } from "@firebase/firestore";
 import { requestInterface } from "@/interfaces/request-context-interface";
 import { formatDate } from "@/components/helpers/helper-functions/format-date";
+import Link from "next/link";
 
 const DefaultRequestList: React.FC<{
   requests: DocumentData | undefined;
@@ -71,6 +72,31 @@ const DefaultRequestList: React.FC<{
                     item.ownerName
                   )}
                 </p>
+                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  Status:{" "}
+                  {item.reqStatus
+                    .toLowerCase()
+                    .includes(props.searchTerm.toLowerCase()) ? (
+                    <>
+                      {item.reqStatus
+                        .split(new RegExp(`(${props.searchTerm})`, "gi"))
+                        .map((part, index) => (
+                          <React.Fragment key={index}>
+                            {part.toLowerCase() ===
+                            props.searchTerm.toLowerCase() ? (
+                              <strong className="text-primary-600">
+                                {part}
+                              </strong>
+                            ) : (
+                              part
+                            )}
+                          </React.Fragment>
+                        ))}
+                    </>
+                  ) : (
+                    item.reqStatus
+                  )}
+                </p>
               </div>
               <div className="flex flex-col items-center text-sm text-gray-600 dark:text-white">
                 <div>Created At</div>
@@ -97,6 +123,7 @@ const DefaultRequestList: React.FC<{
                   ) : (
                     formatDate(item.createdAt)
                   )}
+                  <Link href={"/"}>Details</Link>
                 </div>
               </div>
             </div>

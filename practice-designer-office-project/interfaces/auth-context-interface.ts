@@ -41,6 +41,8 @@ export interface authContextInterface {
   getUserRole: () => Promise<string | undefined>;
   // all users
   allUsers: fetchedUser[] | undefined;
+  // assigned users for am
+  myAssignedUsers: fetchedUser[] | undefined;
 }
 
 export interface fetchedUser {
@@ -48,4 +50,6 @@ export interface fetchedUser {
   email: string;
   photoURL: string;
   role: string;
+  assignedAmName: string;
+  assignedAmId: string;
 }

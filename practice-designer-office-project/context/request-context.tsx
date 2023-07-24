@@ -43,8 +43,8 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       ownerName: user?.displayName || "no name",
       ownerEmail: user?.email,
       reqStatus: "pending",
-      amId: null,
-      amName: null,
+      amId: "flmqC1a8dQSZo3g8pYxqNxkUX8R2",
+      amName: "Account Manager 1",
       amNote: null,
       designerId: null,
       designerNote: null,
@@ -64,7 +64,9 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   const thisClientsRequests = allRequests?.filter(
     (req) => req.owner === user?.uid,
   );
-
+  //2) AM ACTIONS !!!!!
+  // 2) AM can see all his coming reqs
+  const myComingRequests = allRequests?.filter((req) => req.amId === user?.uid);
   return (
     <RequestContext.Provider
       value={{
@@ -78,6 +80,9 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         creatingLoading,
         //client can see his requests
         thisClientsRequests,
+        // AM SIDE ACTIONS
+        // AM can see all his coming reqs
+        myComingRequests,
       }}
     >
       {children}

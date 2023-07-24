@@ -1,11 +1,11 @@
 import React, { createContext, ReactNode, useContext, useEffect } from "react";
 import { auth, db } from "@/config/firebase-config";
 import {
-  useCreateUserWithEmailAndPassword,
   useAuthState,
-  useSignOut,
-  useSignInWithEmailAndPassword,
+  useCreateUserWithEmailAndPassword,
   useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+  useSignOut,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import {
@@ -72,6 +72,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       name: "",
       email: userCredential.user.email,
       photoURL: "",
+      // We can add a field for the assigned AM
+      assignedAmId: "flmqC1a8dQSZo3g8pYxqNxkUX8R2",
+      assignedAmName: "Account Manager 1",
     };
     return await setDoc(doc(collectionRef, newUser.id), newUser);
   };
@@ -120,7 +123,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const userRole = userData.data()?.role;
     return userRole as string;
   };
-  // fetch all users for admin
+  // fetch assigned users for AM for now we do it here, we can do it in the with rules
+
+  const myAssignedUsers = allUsers?.filter(
+    (user) => user.assignedAmId === "flmqC1a8dQSZo3g8pYxqNxkUX8R2",
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -154,6 +162,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         getUserRole,
         // all users for admin
         allUsers,
+        // assigned users for AM
+        myAssignedUsers,
       }}
     >
       {children}

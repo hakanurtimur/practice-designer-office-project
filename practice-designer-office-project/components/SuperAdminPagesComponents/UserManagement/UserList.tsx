@@ -23,7 +23,7 @@ const UserList = () => {
       return {
         name: user.name,
         email: user.email,
-        totalReqs: "100",
+        assignedAmName: user.assignedAmName,
         imageSrc: user.photoURL,
       };
     });
@@ -31,11 +31,13 @@ const UserList = () => {
   const filteredUsers = users?.filter((user) => {
     const userName = user.name.toLowerCase();
     const userEmail = user.email.toLowerCase();
+    const userAssignedAmName = user.assignedAmName.toLowerCase();
     const searchTermFixed = searchTerm.toLowerCase();
     return (
       userName.includes(searchTermFixed) ||
       userEmail.includes(searchTermFixed) ||
-      user.totalReqs.includes(searchTermFixed)
+      userAssignedAmName.includes(searchTermFixed) ||
+      user.assignedAmName.includes(searchTermFixed)
     );
   });
 
