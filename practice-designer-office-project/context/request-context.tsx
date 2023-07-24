@@ -22,7 +22,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   const collectionRef = collection(db, "requests");
   const [snapshot, loading, error] = useCollection(collectionRef);
   // getting documents
-  const value = snapshot?.docs.map((doc) => doc.data());
+  const allRequests = snapshot?.docs.map((doc) => doc.data());
   // state for requests
   const [creatingError, setCreatingError] = React.useState<
     FirestoreError | undefined | null
@@ -31,7 +31,6 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
 
   // 1) USER ACTIONS !!!!!
   // 1) user can create reqs
-
   // createRequest function
   const createRequest = async (title: string, description: string) => {
     setCreatingLoading(true);
@@ -61,16 +60,24 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setCreatingLoading(false);
   };
+  // User can see his requests
+  const thisClientsRequests = allRequests?.filter(
+    (req) => req.owner === user?.uid,
+  );
+
   return (
     <RequestContext.Provider
       value={{
         loading,
         error,
-        value,
-        // create states and functions
+        allRequests,
+        // Client actions
+        //create states and functions
         createRequest,
         creatingError,
         creatingLoading,
+        //client can see his requests
+        thisClientsRequests,
       }}
     >
       {children}

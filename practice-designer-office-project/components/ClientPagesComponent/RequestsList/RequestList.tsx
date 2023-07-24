@@ -1,21 +1,19 @@
 import React from "react";
 import { useRequest } from "@/context/request-context";
-import {
-  requestContextInterface,
-  requestInterface,
-} from "@/interfaces/request-context-interface";
+import { requestContextInterface } from "@/interfaces/request-context-interface";
 import DefaultRequestList from "@/components/helpers/DefaultRequestList/DefaultRequestList";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
-import { formatDate } from "@/components/helpers/helper-functions/format-date";
+import { formatDate } from "../../helpers/helper-functions/format-date";
 
 const RequestList = () => {
-  const { value, loading, error } = useRequest() as requestContextInterface;
+  const { thisClientsRequests, loading, error } =
+    useRequest() as requestContextInterface;
   const [searchTerm, setSearchTerm] = React.useState("");
   const settingSearchTerm = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
-  const filteredRequests = value?.filter((request: requestInterface) => {
+  const filteredRequests = thisClientsRequests?.filter((request) => {
     const requestTitle = request.title.toLowerCase();
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.createdAt).toLowerCase();
@@ -44,6 +42,8 @@ const RequestList = () => {
       )}
       {error ? (
         <p>{error.message}</p>
+      ) : filteredRequests?.length === 0 ? (
+        <p>There is no request</p>
       ) : (
         <div className={"w-8/12"}>
           <DefaultRequestList

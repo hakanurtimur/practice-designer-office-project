@@ -1,7 +1,7 @@
 import { DocumentData, FirestoreError, Timestamp } from "@firebase/firestore";
 
 export interface requestContextInterface {
-  value: DocumentData | undefined;
+  allRequests: DocumentData | undefined;
   error: FirestoreError | undefined;
   loading: boolean;
   // CLIENT SIDE
@@ -11,6 +11,7 @@ export interface requestContextInterface {
   creatingError: FirestoreError | undefined | null;
   creatingLoading: boolean;
   // --- Variables ---
+  thisClientsRequests: DocumentData[] | undefined;
 }
 
 export interface requestInterface {
