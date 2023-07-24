@@ -1,11 +1,12 @@
 import React from "react";
+import ClientDashboard from "@/components/ClientPagesComponent/ClientDashboard";
 
-const ClientDashboard = () => {
+const ClientDashboardPage = () => {
   return (
-    <div>
-      <h1>Client Dashboard</h1>
+    <div className={"h-full"}>
+      <ClientDashboard />;
     </div>
   );
 };
 
-export default ClientDashboard;
+export default ClientDashboardPage;

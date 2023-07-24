@@ -22,7 +22,6 @@ const DefaultCarousel: React.FC<CarouselProps> = ({ items }) => {
     setCurrentSlide((prevSlide) =>
       prevSlide === 0 ? items.length - 1 : prevSlide - 1,
     );
-    console.log(currentSlide);
   };
 
   const sliderList = items.map((item, index) => {
@@ -38,7 +37,7 @@ const DefaultCarousel: React.FC<CarouselProps> = ({ items }) => {
           </div>
           <Link href={`${item.link}`}>
             <img
-              className={"w-40 h-40 bg-gray-300 rounded-full"}
+              className={"w-40 h-40 bg-gray-300 rounded-full mb-5"}
               src={item.imageUrl}
               alt=""
             />
