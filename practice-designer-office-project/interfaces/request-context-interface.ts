@@ -15,9 +15,15 @@ export interface requestContextInterface {
 
   // AM SIDE
   // --- Functions ---
+  acceptRequest: (
+    id: string,
+    amNote: string,
+    designerId: string,
+  ) => Promise<void>;
   // states
   // --- Variables ---
   myComingRequests: DocumentData[] | undefined;
+  selectRequest: (id: string) => DocumentData | undefined;
 }
 
 export interface requestInterface {

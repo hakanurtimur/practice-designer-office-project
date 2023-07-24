@@ -1,7 +1,13 @@
 import React from "react";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
-import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 // messages for import { db, rtdb } from "@/config/firebase";
 import { uuidv4 } from "@firebase/util";
 import { db } from "@/config/firebase-config";
@@ -33,8 +39,8 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   // 1) user can create reqs
   // createRequest function
   const createRequest = async (title: string, description: string) => {
-    setCreatingLoading(true);
     if (!user || !user.email || !user.uid) return;
+    setCreatingLoading(true);
     const newRequest = {
       title: title,
       description: description,
@@ -56,7 +62,6 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       await setDoc(doc(collectionRef, newRequest.id), newRequest);
     } catch (e) {
       setCreatingError(e as FirestoreError);
-      console.log(e);
     }
     setCreatingLoading(false);
   };
@@ -65,8 +70,39 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     (req) => req.owner === user?.uid,
   );
   //2) AM ACTIONS !!!!!
-  // 2) AM can see all his coming reqs
+  // AM can see all his coming reqs
   const myComingRequests = allRequests?.filter((req) => req.amId === user?.uid);
+  // AM can see reqs details
+
+  const selectRequest = (requestId: string) => {
+    return allRequests?.find((req) => req.id === requestId);
+  };
+
+  // AM can update reqs to designs and add notes
+
+  const acceptRequest = async (
+    requestId: string,
+    amNote: string,
+    designerId: string,
+  ) => {
+    if (!user || !user.uid) return;
+    const req = selectRequest(requestId);
+    if (!req) return;
+    setCreatingLoading(true);
+    const updatedRequest = {
+      ...req,
+      reqStatus: "Sent to designer",
+      amNote: amNote,
+      designerId: designerId,
+      updatedAt: serverTimestamp(),
+    };
+    try {
+      await updateDoc(doc(collectionRef, req.id), updatedRequest);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
   return (
     <RequestContext.Provider
       value={{
@@ -83,6 +119,10 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         // AM SIDE ACTIONS
         // AM can see all his coming reqs
         myComingRequests,
+        // AM can see reqs details
+        selectRequest,
+        // AM can update reqs to designs and add notes
+        acceptRequest,
       }}
     >
       {children}

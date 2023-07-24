@@ -49,6 +49,7 @@ const ComingRequestList = () => {
       ) : (
         <div className={"w-8/12"}>
           <DefaultRequestList
+            role={"am"}
             requests={filteredRequests}
             searchTerm={searchTerm}
           />

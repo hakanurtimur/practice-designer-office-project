@@ -7,6 +7,7 @@ import Link from "next/link";
 const DefaultRequestList: React.FC<{
   requests: DocumentData | undefined;
   searchTerm: string;
+  role: string;
 }> = (props) => {
   return (
     <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
@@ -123,8 +124,13 @@ const DefaultRequestList: React.FC<{
                   ) : (
                     formatDate(item.createdAt)
                   )}
-                  <Link href={"/"}>Details</Link>
                 </div>
+                <Link
+                  href={`/${props.role}/request-list/${item.id}`}
+                  className={"justify-self-end text-primary-500"}
+                >
+                  Details
+                </Link>
               </div>
             </div>
           </li>
