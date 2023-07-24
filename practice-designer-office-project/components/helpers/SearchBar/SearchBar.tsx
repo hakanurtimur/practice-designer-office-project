@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const SearchBar: React.FC<{
   content: string;
   placeholder: string;
-  filterUsers: (searchTerm: string) => void;
+  filter: (searchTerm: string) => void;
 }> = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
   console.log(searchQuery);
@@ -53,7 +53,7 @@ const SearchBar: React.FC<{
             dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           onClick={(e) => {
             e.preventDefault();
-            props.filterUsers(searchQuery);
+            props.filter(searchQuery);
           }}
         >
           Search

@@ -2,11 +2,14 @@ import React from "react";
 import { requestContextInterface } from "@/interfaces/request-context-interface";
 import { useRequest } from "@/context/request-context";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
+import { useRouter } from "next/router";
 
 const NewRequest = () => {
   const { createRequest, creatingLoading, creatingError } =
     useRequest() as requestContextInterface;
 
+  // redirect
+  const router = useRouter();
   // error states
   const [error, setError] = React.useState<string | null>(null);
 
@@ -27,6 +30,7 @@ const NewRequest = () => {
       // error
     }
     await createRequest(enteredTitle, enteredDescription);
+    await router.push("/client/request-list");
   };
   return (
     <div className={"mt-10"}>

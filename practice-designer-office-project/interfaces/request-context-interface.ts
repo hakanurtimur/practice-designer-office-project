@@ -1,4 +1,4 @@
-import { DocumentData, FirestoreError } from "@firebase/firestore";
+import { DocumentData, FirestoreError, Timestamp } from "@firebase/firestore";
 
 export interface requestContextInterface {
   value: DocumentData | undefined;
@@ -11,4 +11,22 @@ export interface requestContextInterface {
   creatingError: FirestoreError | undefined | null;
   creatingLoading: boolean;
   // --- Variables ---
+}
+
+export interface requestInterface {
+  title: string;
+  description: string;
+  id: string;
+  owner: string;
+  ownerName: string;
+  ownerEmail: string;
+  reqStatus: string;
+  amId: string | null;
+  amName: string | null;
+  amNote: string | null;
+  designerId: string | null;
+  designerNote: string | null;
+  imgUrl: string | null;
+  createdAt: Timestamp;
+  updatedAt: Timestamp | null;
 }

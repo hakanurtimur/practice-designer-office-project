@@ -47,7 +47,7 @@ const UserList = () => {
         User <span className={`font-bold text-primary-300 text-2x1`}>List</span>
       </h1>
       <div className={"w-8/12"}>
-        <SearchBar {...searchBarProps} filterUsers={settingSearchTerm} />
+        <SearchBar {...searchBarProps} filter={settingSearchTerm} />
       </div>
       <div className={"w-8/12"}>
         <DefaultUserList searchTerm={searchTerm} users={filteredUsers} />
