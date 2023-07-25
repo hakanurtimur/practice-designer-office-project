@@ -26,9 +26,13 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth() as authContextInterface;
   // hooks for requests
   const collectionRef = collection(db, "requests");
+  const designCollectionRef = collection(db, "designs");
   const [snapshot, loading, error] = useCollection(collectionRef);
+  const [designSnapshot, designLoading, designError] =
+    useCollection(designCollectionRef);
   // getting documents
   const allRequests = snapshot?.docs.map((doc) => doc.data());
+  const allDesigns = designSnapshot?.docs.map((doc) => doc.data());
   // state for requests
   const [creatingError, setCreatingError] = React.useState<
     FirestoreError | undefined | null
@@ -95,20 +99,36 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       amNote: amNote,
       designerId: designerId,
       updatedAt: serverTimestamp(),
+      designStatus: "pending",
     };
     try {
       await updateDoc(doc(collectionRef, req.id), updatedRequest);
+      // after updating request, we need to create a design
+      await setDoc(doc(designCollectionRef, req.id), updatedRequest);
     } catch (e) {
       setCreatingError(e as FirestoreError);
     }
     setCreatingLoading(false);
   };
+
+  //3) DESIGNER ACTIONS !!!!!
+  // Designer can see all his coming designs
+  const myComingDesigns = allDesigns?.filter(
+    (design) => design.designerId === user?.uid,
+  );
+  // Designer can see design details
+  // Designer can update design to done and add notes
+
   return (
     <RequestContext.Provider
       value={{
+        // SA SIDE
         loading,
         error,
         allRequests,
+        allDesigns,
+        designLoading,
+        designError,
         // CLIENT SIDE ACTIONS
         //create states and functions
         createRequest,
@@ -123,6 +143,10 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         selectRequest,
         // AM can update reqs to designs and add notes
         acceptRequest,
+
+        // DESIGNER SIDE ACTIONS
+        // Designer can see all his coming designs
+        myComingDesigns,
       }}
     >
       {children}

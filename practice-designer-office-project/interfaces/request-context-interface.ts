@@ -4,6 +4,9 @@ export interface requestContextInterface {
   allRequests: DocumentData | undefined;
   error: FirestoreError | undefined;
   loading: boolean;
+  allDesigns: DocumentData | undefined;
+  designError: FirestoreError | undefined;
+  designLoading: boolean;
   // CLIENT SIDE
   // --- Functions ---
   createRequest: (title: string, description: string) => Promise<void>;
@@ -24,6 +27,12 @@ export interface requestContextInterface {
   // --- Variables ---
   myComingRequests: DocumentData[] | undefined;
   selectRequest: (id: string) => DocumentData | undefined;
+
+  // DESIGNER SIDE
+  // --- Functions ---
+  // states
+  // --- Variables ---
+  myComingDesigns: DocumentData[] | undefined;
 }
 
 export interface requestInterface {
