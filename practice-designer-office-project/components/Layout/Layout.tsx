@@ -5,6 +5,7 @@ import { authContextInterface } from "@/interfaces/auth-context-interface";
 import UnsubscribedMainNavigation from "@/components/Layout/UnsubscribedMainNavigation";
 import SuperAdminMainNavigation from "@/components/Layout/SuperAdminMainNavigation";
 import AccountManagerMainNavigation from "@/components/Layout/AccountManagerMainNavigation";
+import DesignerMainNavigation from "@/components/Layout/DesignerMainNavigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [userRole, setUserRole] = React.useState<string | undefined>(undefined); // ["client", "superadmin"
@@ -31,7 +32,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         ) : userRole === "am" ? (
           <AccountManagerMainNavigation />
         ) : (
-          <UnsubscribedMainNavigation />
+          <DesignerMainNavigation />
         )}
       </header>
       {children}
