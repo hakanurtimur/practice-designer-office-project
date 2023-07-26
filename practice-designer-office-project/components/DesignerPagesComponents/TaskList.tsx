@@ -13,9 +13,7 @@ const TaskList = () => {
   const [activeButton, setActiveButton] = React.useState("all");
 
   const buttonStyles =
-    "text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none " +
-    "focus:ring-primary-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 " +
-    "text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800";
+    "text-gray-700 text-sm w-full sm:w-auto px-2 py-1 text-center dark:text-white-500";
   const settingSearchTerm = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
@@ -24,11 +22,14 @@ const TaskList = () => {
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.updatedAt).toLowerCase();
     const requestAm = request.amName.toLowerCase();
-    return (
-      requestTitle.includes(searchTermFixed) ||
-      formattedDate.includes(searchTermFixed) ||
-      requestAm.includes(searchTermFixed)
-    );
+    return activeButton !== "all"
+      ? request.designStatus === activeButton &&
+          (requestTitle.includes(searchTermFixed) ||
+            formattedDate.includes(searchTermFixed) ||
+            requestAm.includes(searchTermFixed))
+      : requestTitle.includes(searchTermFixed) ||
+          formattedDate.includes(searchTermFixed) ||
+          requestAm.includes(searchTermFixed);
   });
 
   return (
@@ -40,15 +41,17 @@ const TaskList = () => {
       <div className={"w-8/12"}>
         <SearchBar
           content={"requests"}
-          placeholder={"Search with title or date"}
+          placeholder={"Search title, date or AM"}
           filter={settingSearchTerm}
         />
       </div>
-      <div className={"w-6/12 flex flex-row justify-between"}>
+      <div className={"w-6/12 flex flex-row justify-around"}>
         <button
           type="submit"
           className={
-            buttonStyles + " " + (activeButton === "all" && "bg-primary-800")
+            buttonStyles +
+            " " +
+            (activeButton === "all" && "text-primary-500 underline")
           }
           onClick={() => setActiveButton("all")}
         >
@@ -59,7 +62,7 @@ const TaskList = () => {
           className={
             buttonStyles +
             " " +
-            (activeButton === "pending" && "bg-primary-800")
+            (activeButton === "pending" && "text-primary-500 underline")
           }
           onClick={() => setActiveButton("pending")}
         >
@@ -70,7 +73,7 @@ const TaskList = () => {
           className={
             buttonStyles +
             " " +
-            (activeButton === "ongoing" && "bg-primary-800")
+            (activeButton === "ongoing" && "text-primary-500 underline")
           }
           onClick={() => setActiveButton("ongoing")}
         >
@@ -81,11 +84,23 @@ const TaskList = () => {
           className={
             buttonStyles +
             " " +
-            (activeButton === "finished" && "bg-primary-800")
+            (activeButton === "waiting for approval" &&
+              "text-primary-500 underline")
           }
-          onClick={() => setActiveButton("finished")}
+          onClick={() => setActiveButton("waiting for approval")}
         >
           Finished Tasks
+        </button>
+        <button
+          type="submit"
+          className={
+            buttonStyles +
+            " " +
+            (activeButton === "approved" && "text-primary-500 underline")
+          }
+          onClick={() => setActiveButton("approved")}
+        >
+          Approved Tasks
         </button>
       </div>
       {designLoading && <LoadingSpinner />}

@@ -129,9 +129,11 @@ const DefaultDesignList: React.FC<{
                 </div>
                 <Link
                   href={`/${props.role}/task-list/${item.id}`}
-                  className={"justify-self-end text-primary-500"}
+                  className={
+                    "justify-self-end text-primary-500 hover:text-primary-900"
+                  }
                 >
-                  Details
+                  Actions
                 </Link>
               </div>
             </div>

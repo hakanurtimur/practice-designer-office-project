@@ -6,6 +6,7 @@ import { requestContextInterface } from "@/interfaces/request-context-interface"
 import { useRequest } from "@/context/request-context";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
 import FinishTaskForm from "@/components/helpers/FinishTaskForm/FinishTaskForm";
+import Link from "next/link";
 
 const DefaultDetailsCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -193,6 +194,13 @@ const DefaultDetailsCard: React.FC<{
                 </p>
               </div>
             )}
+          </div>
+          <div
+            className={
+              "flex flex-row justify-end m-3 hover:text-primary-500 text-sm text-gray-400"
+            }
+          >
+            <Link href={"/designer/task-list"}> Back to Tasks</Link>
           </div>
         </div>
       </div>
