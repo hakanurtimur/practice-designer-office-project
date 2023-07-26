@@ -30,9 +30,12 @@ export interface requestContextInterface {
 
   // DESIGNER SIDE
   // --- Functions ---
+  acceptDesign: (designId: string) => Promise<void>;
+  finishTask: (designId: string, designerNote: string) => Promise<void>;
   // states
   // --- Variables ---
   myComingDesigns: DocumentData[] | undefined;
+  selectDesign: (id: string) => DocumentData | undefined;
 }
 
 export interface requestInterface {

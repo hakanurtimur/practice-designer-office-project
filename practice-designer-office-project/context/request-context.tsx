@@ -118,6 +118,47 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     (design) => design.designerId === user?.uid,
   );
   // Designer can see design details
+  const selectDesign = (designId: string) => {
+    return allDesigns?.find((design) => design.id === designId);
+  };
+  // Designer can accept design
+  const acceptDesign = async (designId: string) => {
+    if (!user || !user.uid) return;
+    const design = selectDesign(designId);
+    if (!design) return;
+    setCreatingLoading(true);
+    const updatedDesign = {
+      ...design,
+      designStatus: "ongoing",
+      updatedAt: serverTimestamp(),
+    };
+    try {
+      await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
+  // Designer can upload design and finish task
+  const finishTask = async (designId: string, designerNote: string) => {
+    if (!user || !user.uid) return;
+    const design = selectDesign(designId);
+    if (!design) return;
+    setCreatingLoading(true);
+    const updatedDesign = {
+      ...design,
+      designStatus: "waiting for approval",
+      updatedAt: serverTimestamp(),
+      designerNote: designerNote,
+      //imageUrl: imageUrl, will be added later
+    };
+    try {
+      await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
   // Designer can update design to done and add notes
 
   return (
@@ -148,6 +189,12 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         // DESIGNER SIDE ACTIONS
         // Designer can see all his coming designs
         myComingDesigns,
+        // Designer can see design details
+        selectDesign,
+        // Designer can accept design
+        acceptDesign,
+        // Designer can upload design and finish task
+        finishTask,
       }}
     >
       {children}
