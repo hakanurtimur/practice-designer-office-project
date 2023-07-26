@@ -61,6 +61,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       imgUrl: null,
       createdAt: serverTimestamp(),
       updatedAt: null,
+      designStatus: null,
     };
     try {
       await setDoc(doc(collectionRef, newRequest.id), newRequest);

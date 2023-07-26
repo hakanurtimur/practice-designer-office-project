@@ -1,7 +1,7 @@
 import React from "react";
 import { useRequest } from "@/context/request-context";
 import { requestContextInterface } from "@/interfaces/request-context-interface";
-import DefaultRequestList from "@/components/helpers/DefaultRequestList/DefaultRequestList";
+import DefaultRequestList from "@/components/helpers/Lists/DefaultRequestList/DefaultRequestList";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
 import { formatDate } from "../../helpers/helper-functions/format-date";

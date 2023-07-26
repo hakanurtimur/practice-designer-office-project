@@ -14,7 +14,7 @@ const DesignerMainNavigation = () => {
       link: "/designer",
     },
     {
-      title: "Requests",
+      title: "Tasks",
       link: "/designer/task-list",
     },
     {

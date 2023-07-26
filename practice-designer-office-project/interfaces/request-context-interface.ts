@@ -51,4 +51,5 @@ export interface requestInterface {
   imgUrl: string | null;
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
+  designStatus: string | null;
 }

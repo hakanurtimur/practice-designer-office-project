@@ -4,14 +4,14 @@ import { requestInterface } from "@/interfaces/request-context-interface";
 import { formatDate } from "@/components/helpers/helper-functions/format-date";
 import Link from "next/link";
 
-const DefaultRequestList: React.FC<{
-  requests: DocumentData | undefined;
+const DefaultDesignList: React.FC<{
+  designs: DocumentData | undefined;
   searchTerm: string;
   role: string;
 }> = (props) => {
   return (
     <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-      {props.requests?.map((item: requestInterface) => {
+      {props.designs?.map((item: requestInterface) => {
         return (
           <li key={item.id} className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
@@ -24,7 +24,7 @@ const DefaultRequestList: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Request Title:{" "}
+                  Design Title:{" "}
                   {item.title
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
@@ -49,12 +49,13 @@ const DefaultRequestList: React.FC<{
                   )}
                 </p>
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  Requested By:{" "}
-                  {item.ownerName
+                  Sent By:{" "}
+                  {item.amName &&
+                  item.amName
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
                     <>
-                      {item.ownerName
+                      {item.amName
                         .split(new RegExp(`(${props.searchTerm})`, "gi"))
                         .map((part, index) => (
                           <React.Fragment key={index}>
@@ -70,16 +71,17 @@ const DefaultRequestList: React.FC<{
                         ))}
                     </>
                   ) : (
-                    item.ownerName
+                    item.amName
                   )}
                 </p>
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                   Status:{" "}
-                  {item.reqStatus
+                  {item.designStatus &&
+                  item.designStatus
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
                     <>
-                      {item.reqStatus
+                      {item.designStatus
                         .split(new RegExp(`(${props.searchTerm})`, "gi"))
                         .map((part, index) => (
                           <React.Fragment key={index}>
@@ -95,18 +97,18 @@ const DefaultRequestList: React.FC<{
                         ))}
                     </>
                   ) : (
-                    item.reqStatus
+                    item.designStatus
                   )}
                 </p>
               </div>
               <div className="flex flex-col items-center text-sm text-gray-600 dark:text-white">
-                <div>Created At</div>
+                <div>Updated At</div>
                 <div>
-                  {formatDate(item.createdAt)
+                  {formatDate(item.updatedAt)
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
                     <>
-                      {formatDate(item.createdAt)
+                      {formatDate(item.updatedAt)
                         .split(new RegExp(`(${props.searchTerm})`, "gi"))
                         .map((part, index) => (
                           <React.Fragment key={index}>
@@ -122,11 +124,11 @@ const DefaultRequestList: React.FC<{
                         ))}
                     </>
                   ) : (
-                    formatDate(item.createdAt)
+                    formatDate(item.updatedAt)
                   )}
                 </div>
                 <Link
-                  href={`/${props.role}/request-list/${item.id}`}
+                  href={`/${props.role}/task-list/${item.id}`}
                   className={"justify-self-end text-primary-500"}
                 >
                   Details
@@ -140,4 +142,4 @@ const DefaultRequestList: React.FC<{
   );
 };
 
-export default DefaultRequestList;
+export default DefaultDesignList;

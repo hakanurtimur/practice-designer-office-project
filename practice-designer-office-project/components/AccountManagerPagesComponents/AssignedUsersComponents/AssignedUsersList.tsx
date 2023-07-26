@@ -1,6 +1,6 @@
 import React from "react";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
-import DefaultUserList from "@/components/helpers/DefaultUserList/DefaultUserList";
+import DefaultUserList from "@/components/helpers/Lists/DefaultUserList/DefaultUserList";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import { useAuth } from "@/context/auth-context";
 

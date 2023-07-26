@@ -1,6 +1,6 @@
 import { Timestamp } from "@firebase/firestore";
 
-export const formatDate = (timestamp: Timestamp) => {
+export const formatDate = (timestamp: Timestamp | null) => {
   if (!timestamp) return "Waiting for date...";
   const dateObj = new Date(timestamp.seconds * 1000);
   const month = dateObj.toLocaleString("en-US", { month: "long" });
