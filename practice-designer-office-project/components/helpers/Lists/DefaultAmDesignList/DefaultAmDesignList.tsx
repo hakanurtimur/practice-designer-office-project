@@ -4,7 +4,7 @@ import { requestInterface } from "@/interfaces/request-context-interface";
 import { formatDate } from "@/components/helpers/helper-functions/format-date";
 import Link from "next/link";
 
-const DefaultDesignList: React.FC<{
+const DefaultAmDesignList: React.FC<{
   designs: DocumentData | undefined;
   searchTerm: string;
 }> = (props) => {
@@ -48,13 +48,13 @@ const DefaultDesignList: React.FC<{
                   )}
                 </p>
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  Sent By:{" "}
-                  {item.amName &&
-                  item.amName
+                  Designed By:{" "}
+                  {item.designerId &&
+                  item.designerId
                     .toLowerCase()
                     .includes(props.searchTerm.toLowerCase()) ? (
                     <>
-                      {item.amName
+                      {item.designerId
                         .split(new RegExp(`(${props.searchTerm})`, "gi"))
                         .map((part, index) => (
                           <React.Fragment key={index}>
@@ -70,7 +70,7 @@ const DefaultDesignList: React.FC<{
                         ))}
                     </>
                   ) : (
-                    item.amName
+                    item.designerId
                   )}
                 </p>
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -127,7 +127,7 @@ const DefaultDesignList: React.FC<{
                   )}
                 </div>
                 <Link
-                  href={`/designer/task-list/${item.id}`}
+                  href={`/am/design-approval/${item.id}`}
                   className={
                     "justify-self-end text-primary-500 hover:text-primary-900"
                   }
@@ -143,4 +143,4 @@ const DefaultDesignList: React.FC<{
   );
 };
 
-export default DefaultDesignList;
+export default DefaultAmDesignList;

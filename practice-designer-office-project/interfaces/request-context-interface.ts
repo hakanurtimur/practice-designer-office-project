@@ -23,10 +23,14 @@ export interface requestContextInterface {
     amNote: string,
     designerId: string,
   ) => Promise<void>;
+  approveDesign: (designId: string) => Promise<void>;
+  rejectDesign: (designId: string, amNote: string) => Promise<void>;
+
   // states
   // --- Variables ---
   myComingRequests: DocumentData[] | undefined;
   selectRequest: (id: string) => DocumentData | undefined;
+  myDutyDesigns: DocumentData[] | undefined;
 
   // DESIGNER SIDE
   // --- Functions ---

@@ -77,8 +77,11 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
   //2) AM ACTIONS !!!!!
   // AM can see all his coming reqs
   const myComingRequests = allRequests?.filter((req) => req.amId === user?.uid);
+  // AM can see all his designs
+  const myDutyDesigns = allDesigns?.filter(
+    (design) => design.amId === user?.uid,
+  );
   // AM can see reqs details
-
   const selectRequest = (requestId: string) => {
     return allRequests?.find((req) => req.id === requestId);
   };
@@ -106,6 +109,52 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       await updateDoc(doc(collectionRef, req.id), updatedRequest);
       // after updating request, we need to create a design
       await setDoc(doc(designCollectionRef, req.id), updatedRequest);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
+
+  // AM can approve design
+  const approveDesign = async (designId: string) => {
+    if (!user || !user.uid) return;
+    const design = selectDesign(designId);
+    const request = selectRequest(designId);
+    if (!design) return;
+    setCreatingLoading(true);
+    const updatedDesign = {
+      ...design,
+      designStatus: "approved",
+      updatedAt: serverTimestamp(),
+    };
+    const updatedRequest = {
+      ...request,
+      designStatus: "approved",
+      updatedAt: serverTimestamp(),
+      reqStatus: "waiting for review",
+    };
+    try {
+      await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
+      await updateDoc(doc(collectionRef, design.id), updatedRequest);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
+  // AM can reject design
+  const rejectDesign = async (designId: string, amNote: string) => {
+    if (!user || !user.uid) return;
+    const design = selectDesign(designId);
+    if (!design) return;
+    setCreatingLoading(true);
+    const updatedDesign = {
+      ...design,
+      designStatus: "pending",
+      updatedAt: serverTimestamp(),
+      amNote: amNote,
+    };
+    try {
+      await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
     } catch (e) {
       setCreatingError(e as FirestoreError);
     }
@@ -183,9 +232,14 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         myComingRequests,
         // AM can see reqs details
         selectRequest,
+        // AM can see all his designs
+        myDutyDesigns,
         // AM can update reqs to designs and add notes
         acceptRequest,
-
+        // AM can approve design
+        approveDesign,
+        // AM can reject design
+        rejectDesign,
         // DESIGNER SIDE ACTIONS
         // Designer can see all his coming designs
         myComingDesigns,

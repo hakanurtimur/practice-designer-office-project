@@ -8,10 +8,9 @@ import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
 import FinishTaskForm from "@/components/helpers/FinishTaskForm/FinishTaskForm";
 import Link from "next/link";
 
-const DefaultDetailsCard: React.FC<{
+const DesignItemCard: React.FC<{
   itemId: string | string[] | undefined;
   item: DocumentData | undefined;
-  waitingForContent: string;
 }> = (props) => {
   const [activeTab, setActiveTab] = React.useState("details");
 
@@ -91,12 +90,6 @@ const DefaultDetailsCard: React.FC<{
               {props.item.title}
             </h2>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
-              Clients Description:
-            </p>
-            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
-              {props.item.description}
-            </p>
-            <p className="mb-2 text-primary-500 dark:text-primary-500">
               Sent at:
             </p>
             <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
@@ -124,6 +117,15 @@ const DefaultDetailsCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Brief
             </h2>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Clients Description:
+            </p>
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+              {props.item.description}
+            </p>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Managers Brief:
+            </p>
             <p className="mb-3 text-gray-800 text-sm dark:text-gray-400">
               {props.item.amNote}
             </p>
@@ -177,6 +179,18 @@ const DefaultDetailsCard: React.FC<{
             </h2>
             {props.item.designStatus === "ongoing" ? (
               <FinishTaskForm designId={props.itemId as string} />
+            ) : props.item.designStatus === "pending" ? (
+              <div className={"flex flex-row gap-3  mt-5"}>
+                <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+                  Your need to accept this design first. Go to the{" "}
+                  <button
+                    onClick={() => setActiveTab("brief")}
+                    className="underline text-primary-500 dark:text-primary-500"
+                  >
+                    Brief tab.
+                  </button>
+                </p>
+              </div>
             ) : creatingLoading ? (
               <LoadingSpinner />
             ) : creatingError ? (
@@ -208,7 +222,7 @@ const DefaultDetailsCard: React.FC<{
   );
 };
 
-export default DefaultDetailsCard;
+export default DesignItemCard;
 
 // TODO: Add notifications
 // TODO: Add upload image for pp s and tasks

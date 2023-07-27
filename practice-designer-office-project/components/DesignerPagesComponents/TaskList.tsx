@@ -116,7 +116,6 @@ const TaskList = () => {
           <DefaultDesignList
             designs={filteredRequests}
             searchTerm={searchTerm}
-            role={"designer"}
           />
         </div>
       )}

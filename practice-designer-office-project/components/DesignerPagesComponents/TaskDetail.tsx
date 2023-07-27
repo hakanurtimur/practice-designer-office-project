@@ -9,13 +9,7 @@ const TaskDetail: React.FC<{
   console.log(props.taskId);
   const { selectDesign } = useRequest() as requestContextInterface;
   const design = selectDesign(props.taskId as string);
-  return (
-    <DesignItemCard
-      itemId={props.taskId}
-      item={design}
-      waitingForContent={"processing"}
-    />
-  );
+  return <DesignItemCard itemId={props.taskId} item={design} />;
 };
 
 export default TaskDetail;
