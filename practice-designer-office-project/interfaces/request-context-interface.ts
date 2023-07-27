@@ -10,6 +10,8 @@ export interface requestContextInterface {
   // CLIENT SIDE
   // --- Functions ---
   createRequest: (title: string, description: string) => Promise<void>;
+  approveRequest: (requestId: string) => Promise<void>;
+  rejectRequest: (requestId: string, description: string) => Promise<void>;
   // states
   creatingError: FirestoreError | undefined | null;
   creatingLoading: boolean;

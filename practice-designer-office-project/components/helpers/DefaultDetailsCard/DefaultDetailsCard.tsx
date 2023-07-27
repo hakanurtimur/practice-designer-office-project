@@ -8,6 +8,7 @@ import { DocumentData } from "@firebase/firestore";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { requestContextInterface } from "@/interfaces/request-context-interface";
 import { useRequest } from "@/context/request-context";
+import Link from "next/link";
 
 const DefaultDetailsCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -130,9 +131,12 @@ const DefaultDetailsCard: React.FC<{
                 <p className="mb-2 text-gray-500 text-sm dark:text-gray-400">
                   For more information please go to{" "}
                   {props.role === "Request" && (
-                    <button className="mb-2 text-primary-500 dark:text-primary-500">
+                    <Link
+                      href={`/am/design-approval/${props.item.id}`}
+                      className="mb-2 text-primary-500 dark:text-primary-500"
+                    >
                       design detail.
-                    </button>
+                    </Link>
                   )}
                 </p>
               </>
@@ -145,6 +149,13 @@ const DefaultDetailsCard: React.FC<{
                 </p>
               </div>
             )}
+          </div>
+          <div
+            className={
+              "flex flex-row justify-end m-3 hover:text-primary-500 text-sm text-gray-400"
+            }
+          >
+            <Link href={"/am/request-list"}> Back to Requests</Link>
           </div>
         </div>
       </div>

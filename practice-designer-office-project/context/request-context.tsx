@@ -70,6 +70,46 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setCreatingLoading(false);
   };
+  // user can review his reqs and approve
+
+  const approveRequest = async (requestId: string) => {
+    if (!user || !user.uid) return;
+    const req = selectRequest(requestId);
+    if (!req) return;
+    setCreatingLoading(true);
+    const updatedRequest = {
+      ...req,
+      reqStatus: "approved",
+      updatedAt: serverTimestamp(),
+    };
+    try {
+      await updateDoc(doc(collectionRef, req.id), updatedRequest);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
+  // user can review his reqs and reject
+  const rejectRequest = async (requestId: string, description: string) => {
+    if (!user || !user.uid) return;
+    const req = selectRequest(requestId);
+    if (!req) return;
+    setCreatingLoading(true);
+    const updatedRequest = {
+      ...req,
+      reqStatus: "pending",
+      updatedAt: serverTimestamp(),
+      description: description,
+      designStatus: null,
+    };
+    try {
+      await updateDoc(doc(collectionRef, req.id), updatedRequest);
+    } catch (e) {
+      setCreatingError(e as FirestoreError);
+    }
+    setCreatingLoading(false);
+  };
+
   // User can see his requests
   const thisClientsRequests = allRequests?.filter(
     (req) => req.owner === user?.uid,
@@ -227,6 +267,10 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
         creatingLoading,
         //client can see his requests
         thisClientsRequests,
+        // client can review his reqs and approve
+        approveRequest,
+        // client can review his reqs and reject
+        rejectRequest,
         // AM SIDE ACTIONS
         // AM can see all his coming reqs
         myComingRequests,

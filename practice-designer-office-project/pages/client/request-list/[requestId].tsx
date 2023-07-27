@@ -1,11 +1,11 @@
 import React from "react";
+import RequestDetail from "@/components/ClientPagesComponent/RequestsList/RequestDetail";
+import { useRouter } from "next/router";
 
 const RequestDetailPage = () => {
-  return (
-    <div>
-      <h1>Request Detail</h1>
-    </div>
-  );
+  const router = useRouter();
+  const { requestId } = router.query;
+  return <RequestDetail requestId={requestId} />;
 };
 
 export default RequestDetailPage;
