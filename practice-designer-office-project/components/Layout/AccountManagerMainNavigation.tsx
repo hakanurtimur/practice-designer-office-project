@@ -14,19 +14,19 @@ const AccountManagerMainNavigation = () => {
       link: "/am",
     },
     {
+      title: "Clients",
+      link: "/am/assigned-users",
+    },
+    {
       title: "Requests",
       link: "/am/request-list",
     },
     {
-      title: "Assigned Users",
-      link: "/am/assigned-users",
-    },
-    {
-      title: "Profile Setting",
+      title: "Profile",
       link: "/am/profile",
     },
     {
-      title: "Message Center",
+      title: "Messages",
       link: "/",
     },
     {

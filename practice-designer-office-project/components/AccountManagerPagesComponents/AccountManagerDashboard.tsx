@@ -4,7 +4,7 @@ import DefaultCarousel from "@/components/helpers/DefaultCarousel/DefaultCarouse
 const AccountManagerDashboard = () => {
   const items = [
     {
-      content: "Assigned Users",
+      content: "Clients",
       imageUrl: "/your-users.png",
       link: "/am/assigned-users",
     },
@@ -14,12 +14,12 @@ const AccountManagerDashboard = () => {
       link: "/am/request-list",
     },
     {
-      content: "Profile Settings",
+      content: "Profile",
       imageUrl: "/user-settings.png",
       link: "/am/profile",
     },
     {
-      content: "Message Center",
+      content: "Messages",
       imageUrl: "/messages.png",
       link: "/am/message-center",
     },
