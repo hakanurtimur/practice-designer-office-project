@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import { useAuth } from "@/context/auth-context";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+import { useNotification } from "@/context/notification-context";
 
 const DefaultUpdateProfile: React.FC<{
   userRole: string;
 }> = (props) => {
+  // auth context
   const { updateUserProfile, updating, updateError } =
     useAuth() as authContextInterface;
+  // notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
   // router
   const router = useRouter();
   // error
@@ -41,13 +47,33 @@ const DefaultUpdateProfile: React.FC<{
       });
     }
     if (enteredName !== undefined && enteredSurname !== undefined) {
+      await showNotification({
+        message: "Updating profile...",
+        status: "loading",
+        title: "Updating profile",
+      });
       await updateUserProfile({
         displayName: enteredName + " " + enteredSurname,
         photoURL: "/user-pen.png",
       });
+      await showNotification({
+        message: "Profile updated",
+        status: "success",
+        title: "Profile updated",
+      });
     }
     await router.push(`/${props.userRole}/profile`);
   };
+
+  useEffect(() => {
+    if (updateError) {
+      showNotification({
+        message: updateError.message,
+        status: "error",
+        title: "Error updating profile",
+      });
+    }
+  }, [updateError]);
 
   return (
     <form onSubmit={handleSubmit} className={"w-8/12 mx-auto my-10"}>
@@ -65,7 +91,7 @@ const DefaultUpdateProfile: React.FC<{
         </div>
         <div className="relative z-0 w-full mb-6 group">
           <label
-            className="block mb-2 text-sm font-medium text-gray-900
+            className="block mb-2 text-sm font-medium
         dark:text-white text-primary-600"
             htmlFor="default_size"
           >
