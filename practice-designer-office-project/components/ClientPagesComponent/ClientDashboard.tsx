@@ -4,24 +4,24 @@ import DefaultCarousel from "@/components/helpers/DefaultCarousel/DefaultCarouse
 const ClientDashboard = () => {
   const items = [
     {
-      content: "New Request",
-      imageUrl: "/plus.png",
-      link: "/client/new-request",
-    },
-    {
-      content: "Your Requests",
+      content: "Requests",
       imageUrl: "/request.png",
       link: "/client/request-list",
     },
     {
-      content: "Profile Settings",
+      content: "Profile",
       imageUrl: "/user-settings.png",
       link: "/client/profile",
     },
     {
-      content: "Message Center",
+      content: "Messages",
       imageUrl: "/messages.png",
       link: "/client/message-center",
+    },
+    {
+      content: "New Request",
+      imageUrl: "/plus.png",
+      link: "/client/new-request",
     },
   ];
 

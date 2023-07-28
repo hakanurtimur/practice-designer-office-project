@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
+
 const ClientMainNavigation = () => {
   const { signOut, signOutLoading } = useAuth() as authContextInterface;
 
@@ -17,11 +18,11 @@ const ClientMainNavigation = () => {
       link: "/client/request-list",
     },
     {
-      title: "Profile Setting",
+      title: "Profile",
       link: "/client/profile",
     },
     {
-      title: "Message Center",
+      title: "Messages",
       link: "/",
     },
     {
