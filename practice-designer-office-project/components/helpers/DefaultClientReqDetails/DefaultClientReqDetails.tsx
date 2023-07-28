@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { formatDate } from "@/components/helpers/helper-functions/format-date";
 import { DocumentData } from "@firebase/firestore";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
@@ -6,6 +6,8 @@ import { requestContextInterface } from "@/interfaces/request-context-interface"
 import { useRequest } from "@/context/request-context";
 import Link from "next/link";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const DefaultDetailsCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -14,10 +16,16 @@ const DefaultDetailsCard: React.FC<{
   item: DocumentData | undefined;
   waitingForContent: string;
 }> = (props) => {
+  // req context
   const { creatingError, creatingLoading } =
     useRequest() as requestContextInterface;
+  //notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
+  // states
   const [activeTab, setActiveTab] = React.useState("details");
   const [rejecting, setRejecting] = React.useState(false);
+  //ref
   const revisionNoteRef = React.useRef<HTMLTextAreaElement>(null);
   const { approveRequest, rejectRequest } =
     useRequest() as requestContextInterface;
@@ -25,7 +33,18 @@ const DefaultDetailsCard: React.FC<{
   if (!props.item) return <LoadingSpinner />;
 
   const handleApprove = async () => {
+    await showNotification({
+      title: "Loading",
+      message: "Please wait...",
+      status: "loading",
+    });
     await approveRequest(props.itemId as string);
+    await showNotification({
+      title: "Success",
+      message:
+        "Your request has been approved. You can download your design now.",
+      status: "success",
+    });
   };
   const handleReject = async () => {
     if (!revisionNoteRef.current) return;
@@ -34,12 +53,37 @@ const DefaultDetailsCard: React.FC<{
       setRejecting(false);
       return;
     }
+    await showNotification({
+      title: "Loading",
+      message: "Please wait...",
+      status: "loading",
+    });
     await rejectRequest(props.itemId as string, note);
+    await showNotification({
+      title: "Information",
+      message:
+        "Your request has been rejected and has been sent to us with your new brief. " +
+        "You can follow your request process in the request list.",
+      status: "info",
+    });
     setRejecting(false);
   };
 
+  useEffect(() => {
+    if (creatingError) {
+      showNotification({
+        title: "Error",
+        message: creatingError.message,
+        status: "error",
+      });
+    }
+  }, [creatingError]);
+
   return (
     <>
+      {creatingLoading && (
+        <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+      )}
       <div className={"mt-10 w-full"}>
         <h1 className={`font-bold text-center text-primary-600 text-2xl`}>
           Request{" "}
@@ -215,10 +259,16 @@ const DefaultDetailsCard: React.FC<{
                       className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4
                   focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm w-full
                   sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
-                  dark:focus:ring-primary-800 mt-3 w-1/2 self-end"
+                  dark:focus:ring-primary-800 mt-3  self-end"
                       onClick={handleReject}
                     >
                       Revision with Note
+                    </button>
+                    <button
+                      className="hover:text-primary-500 text-sm text-gray-400 self-end mt-3"
+                      onClick={() => setRejecting(false)}
+                    >
+                      Back
                     </button>
                   </div>
                 )}
@@ -240,3 +290,5 @@ const DefaultDetailsCard: React.FC<{
 
 export default DefaultDetailsCard;
 // todo: fix am request details
+
+// todo: when download design add notifications on them, do same for profile image uploading states

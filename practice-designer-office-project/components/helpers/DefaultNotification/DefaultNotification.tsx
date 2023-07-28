@@ -4,6 +4,7 @@ import { useNotification } from "@/context/notification-context";
 import SuccessIcon from "@/components/ui/NotificationIcons/SuccessIcon";
 import OnFireIcon from "@/components/ui/NotificationIcons/OnFireIcon";
 import ErrorIcon from "@/components/ui/NotificationIcons/ErrorIcon";
+import InfoIcon from "@/components/ui/NotificationIcons/InfoIcon";
 
 const DefaultNotification: React.FC<{
   message: string;
@@ -14,6 +15,7 @@ const DefaultNotification: React.FC<{
   const success = "text-green-500 bg-green-100 animate-fade-down";
   const error = "text-red-500 bg-red-100";
   const loading = "text-blue-500 bg-blue-100";
+  const info = "text-orange-500 bg-orange-100";
 
   const notificationClass =
     props.status === "success"
@@ -22,6 +24,8 @@ const DefaultNotification: React.FC<{
       ? error
       : props.status === "loading"
       ? loading
+      : props.status === "info"
+      ? info
       : "";
 
   useEffect(() => {
@@ -39,7 +43,7 @@ const DefaultNotification: React.FC<{
     <div
       id="toast-default"
       className={`${notificationClass} fixed flex bottom-0 items-center w-full justify-between p-4 rounded-lg
-      shadow`}
+      shadow z-50`}
       role="alert"
     >
       <div
@@ -50,9 +54,11 @@ const DefaultNotification: React.FC<{
           <SuccessIcon />
         ) : props.status === "loading" ? (
           <OnFireIcon />
-        ) : (
+        ) : props.status === "error" ? (
           <ErrorIcon />
-        )}
+        ) : props.status === "info" ? (
+          <InfoIcon />
+        ) : null}
       </div>
       <div className="ml-3 text-sm font-normal">{props.message}</div>
       <button

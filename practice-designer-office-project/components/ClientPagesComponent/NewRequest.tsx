@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { requestContextInterface } from "@/interfaces/request-context-interface";
 import { useRequest } from "@/context/request-context";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const NewRequest = () => {
+  // req context
   const { createRequest, creatingLoading, creatingError } =
     useRequest() as requestContextInterface;
-
-  // redirect
+  // notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
+  // router
   const router = useRouter();
   // error states
   const [error, setError] = React.useState<string | null>(null);
@@ -27,16 +32,36 @@ const NewRequest = () => {
       enteredDescription.trim().length === 0
     ) {
       setError("Please enter a valid title and description");
-      // error
     }
+    await showNotification({
+      status: "loading",
+      title: "Creating request...",
+      message: "Please wait while we create your request.",
+    });
     await createRequest(enteredTitle, enteredDescription);
+    await showNotification({
+      status: "success",
+      title: "Request created successfully",
+      message:
+        "Your request has been created successfully. You can find it in your request list.",
+    });
     await router.push("/client/request-list");
   };
+
+  useEffect(() => {
+    if (creatingError) {
+      showNotification({
+        status: "error",
+        title: "Error creating request",
+        message: creatingError.message,
+      });
+    }
+  });
   return (
     <div className={"mt-10"}>
       {creatingLoading && <LoadingSpinner />}
       {creatingLoading && (
-        <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+        <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
       )}
       <form onSubmit={submitHandler}>
         <h1
@@ -132,3 +157,5 @@ const NewRequest = () => {
 };
 
 export default NewRequest;
+
+//TODO add image upload functionality
