@@ -43,9 +43,21 @@ module.exports = {
             visibility: "hidden",
           },
         },
+        "fade-down": {
+          "0%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(0)",
+          },
+          "100%": {
+            transform: "translateY(100%)",
+          },
+        },
       },
       animation: {
         "slide-right": "slide-right 0.5s ease-out forwards",
+        "fade-down": "fade-down 3s ease-out forwards",
       },
     },
   },

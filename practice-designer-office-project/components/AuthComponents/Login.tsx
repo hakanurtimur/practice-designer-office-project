@@ -1,14 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import { useAuth } from "@/context/auth-context";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const Login = () => {
   // auth context
   const { login, loginLoading, loginError, user, getUserRole } =
     useAuth() as authContextInterface;
+  // notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
 
   // router
   const router = useRouter();
@@ -20,7 +25,6 @@ const Login = () => {
     error: false,
     content: "",
   });
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current?.value;
@@ -42,6 +46,11 @@ const Login = () => {
     }
     // enteredEmail, enteredPassword => send to API
     if (enteredEmail !== undefined && enteredPassword !== undefined) {
+      await showNotification({
+        message: "Logging in...",
+        status: "loading",
+        title: "Logging in",
+      });
       await login(enteredEmail, enteredPassword);
     }
   };
@@ -49,20 +58,25 @@ const Login = () => {
     if (user) {
       const userRole = await getUserRole();
       await router.push(`/${userRole}`);
+      await showNotification({
+        message: "Logged in",
+        status: "success",
+        title: "Logged in",
+      });
     }
   };
 
   handleUserRole().then();
-  /*  useEffect(() => {
-    async function pushToHome() {
-      if (!loginError && !loginLoading && user && userRole) {
-        await router.push(`/${userRole}`);
-      } else {
-        return;
-      }
+  useEffect(() => {
+    if (loginError) {
+      showNotification({
+        message: loginError.message,
+        status: "error",
+        title: "Logged in",
+      });
     }
-    pushToHome().then();
-  }, [loginError, loginLoading]);*/
+  }, [loginError]);
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-start mt-20 px-6 py-8 mx-auto md:h-screen lg:py-0">

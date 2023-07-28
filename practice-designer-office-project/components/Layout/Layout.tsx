@@ -6,10 +6,15 @@ import UnsubscribedMainNavigation from "@/components/Layout/UnsubscribedMainNavi
 import SuperAdminMainNavigation from "@/components/Layout/SuperAdminMainNavigation";
 import AccountManagerMainNavigation from "@/components/Layout/AccountManagerMainNavigation";
 import DesignerMainNavigation from "@/components/Layout/DesignerMainNavigation";
+import DefaultNotification from "@/components/helpers/DefaultNotification/DefaultNotification";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [userRole, setUserRole] = React.useState<string | undefined>(undefined); // ["client", "superadmin"
   const { user, getUserRole } = useAuth() as authContextInterface;
+  const { activeNotification } =
+    useNotification() as notificationContextInterface;
 
   const handleUserRole = async () => {
     if (user) {
@@ -36,6 +41,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         )}
       </header>
       {children}
+      {activeNotification && (
+        <DefaultNotification
+          message={activeNotification.message}
+          status={activeNotification.status}
+        />
+      )}
     </Fragment>
   );
 };
