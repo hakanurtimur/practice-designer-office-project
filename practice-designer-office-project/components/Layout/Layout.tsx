@@ -6,7 +6,7 @@ import UnsubscribedMainNavigation from "@/components/Layout/UnsubscribedMainNavi
 import SuperAdminMainNavigation from "@/components/Layout/SuperAdminMainNavigation";
 import AccountManagerMainNavigation from "@/components/Layout/AccountManagerMainNavigation";
 import DesignerMainNavigation from "@/components/Layout/DesignerMainNavigation";
-import DefaultNotification from "@/components/helpers/DefaultNotification/DefaultNotification";
+import DefaultNotification from "../helpers/DefaultNotification/DefaultNotification";
 import { useNotification } from "@/context/notification-context";
 import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 

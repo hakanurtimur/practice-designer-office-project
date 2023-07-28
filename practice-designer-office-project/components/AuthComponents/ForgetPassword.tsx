@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import PasswordSent from "@/components/AuthComponents/PasswordSent";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const ForgetPassword = () => {
   // state
@@ -18,6 +20,8 @@ const ForgetPassword = () => {
     error: false,
     content: "",
   });
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,12 +41,31 @@ const ForgetPassword = () => {
     console.log(enteredEmail);
 
     if (enteredEmail !== undefined) {
+      await showNotification({
+        message: "Sending password reset email...",
+        status: "loading",
+        title: "Sending password reset email",
+      });
       await sendPasswordReset(enteredEmail);
-      if (!sendPasswordError) {
-        await setPasswordSent(true);
-      }
     }
+    await showNotification({
+      message: "Password reset email sent",
+      status: "success",
+      title: "Password reset email sent",
+    });
+    await setPasswordSent(true);
   };
+
+  useEffect(() => {
+    if (sendPasswordError) {
+      showNotification({
+        message: sendPasswordError.message,
+        status: "error",
+        title: "Logged in",
+      });
+      setPasswordSent(false);
+    }
+  }, [sendPasswordError]);
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -53,7 +76,7 @@ const ForgetPassword = () => {
         >
           {sendingPassword && <LoadingSpinner />}
           {sendingPassword && (
-            <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+            <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
           )}
           {!passwordSent ? (
             <div className="p-6 space-y-6 md:space-y-6 sm:p-8">

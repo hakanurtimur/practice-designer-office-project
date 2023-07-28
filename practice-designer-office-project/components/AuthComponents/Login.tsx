@@ -86,7 +86,7 @@ const Login = () => {
         >
           {loginLoading && <LoadingSpinner />}
           {loginLoading && (
-            <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+            <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
           )}
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">

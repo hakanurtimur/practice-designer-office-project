@@ -4,10 +4,17 @@ import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+
 const Signup = () => {
   // auth context
   const { signUp, createLoading, createError, user } =
     useAuth() as authContextInterface;
+
+  // notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
   // router
   const router = useRouter();
   // refs
@@ -47,13 +54,31 @@ const Signup = () => {
       });
     } else {
       if (enteredEmail !== undefined && enteredPassword !== undefined) {
+        await showNotification({
+          message: "Creating account...",
+          status: "loading",
+          title: "Creating account",
+        });
         await signUp(enteredEmail, enteredPassword);
       }
+      await showNotification({
+        message: "Account created",
+        status: "success",
+        title: "Account created",
+      });
     }
     // enteredEmail, enteredPassword, enteredConfirmPassword => send to API
   };
 
   useEffect(() => {
+    if (createError) {
+      showNotification({
+        message: createError.message,
+        status: "error",
+        title: "Error creating account",
+      });
+    }
+
     async function pushToHome() {
       if (!createError && !createLoading && user) {
         await router.push(`/client/profile/update`);
@@ -61,6 +86,7 @@ const Signup = () => {
         return;
       }
     }
+
     pushToHome().then(); // maybe add alert
   }, [createError, createLoading]);
 
@@ -73,7 +99,7 @@ const Signup = () => {
         >
           {createLoading && <LoadingSpinner />}
           {createLoading && (
-            <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+            <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
           )}
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8 relative">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
