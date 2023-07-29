@@ -5,6 +5,7 @@ import DefaultRequestList from "@/components/helpers/Lists/DefaultRequestList/De
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
 import { formatDate } from "../../helpers/helper-functions/format-date";
+import FilterButtons from "@/components/helpers/FilterButtons/FillterButtons";
 
 const RequestList = () => {
   const { thisClientsRequests, loading, error } =
@@ -13,15 +14,52 @@ const RequestList = () => {
   const settingSearchTerm = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
-  const filteredRequests = thisClientsRequests?.filter((request) => {
+  const [isSorted, setIsSorted] = React.useState(false);
+  // sort designs by date
+  const sortedRequests = thisClientsRequests?.sort((a, b) => {
+    return isSorted
+      ? a.createdAt > b.createdAt
+        ? -1
+        : 1
+      : a.createdAt < b.createdAt
+      ? -1
+      : 1;
+  });
+
+  const filteredRequests = sortedRequests?.filter((request) => {
     const requestTitle = request.title.toLowerCase();
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.createdAt).toLowerCase();
+    const reqStatus = request.reqStatus.toLowerCase();
     return (
       requestTitle.includes(searchTermFixed) ||
-      formattedDate.includes(searchTermFixed)
+      formattedDate.includes(searchTermFixed) ||
+      reqStatus.includes(searchTermFixed)
     );
   });
+
+  const segments = [
+    {
+      name: "",
+      buttonTitle: "All Requests",
+    },
+    {
+      name: "pending",
+      buttonTitle: "Pending Requests",
+    },
+    {
+      name: "Sent to Designer",
+      buttonTitle: "Sent Requests",
+    },
+    {
+      name: "waiting for review",
+      buttonTitle: "Waiting Your Review",
+    },
+    {
+      name: "approved",
+      buttonTitle: "Approved Requests",
+    },
+  ];
 
   return (
     <div className={"mx-auto my-10 flex flex-col items-center gap-10 w-full"}>
@@ -36,6 +74,13 @@ const RequestList = () => {
           filter={settingSearchTerm}
         />
       </div>
+      <FilterButtons
+        setActiveButton={setSearchTerm}
+        segments={segments}
+        isSorted={isSorted}
+        setIsSorted={setIsSorted}
+      />
+
       {loading && <LoadingSpinner />}
       {loading && (
         <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>

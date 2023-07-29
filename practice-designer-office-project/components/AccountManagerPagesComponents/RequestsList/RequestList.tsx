@@ -18,10 +18,10 @@ const ComingRequestList = () => {
   // sort designs by date
   const sortedRequests = myComingRequests?.sort((a, b) => {
     return isSorted
-      ? a.updatedAt > b.updatedAt
+      ? a.createdAt > b.createdAt
         ? -1
         : 1
-      : a.updatedAt < b.updatedAt
+      : a.createdAt < b.createdAt
       ? -1
       : 1;
   });
@@ -30,10 +30,12 @@ const ComingRequestList = () => {
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.createdAt).toLowerCase();
     const reqStatus = request.reqStatus.toLowerCase();
+    const reqOwner = request.ownerName.toLowerCase();
     return (
       requestTitle.includes(searchTermFixed) ||
       formattedDate.includes(searchTermFixed) ||
-      reqStatus.includes(searchTermFixed)
+      reqStatus.includes(searchTermFixed) ||
+      reqOwner.includes(searchTermFixed)
     );
   });
   const segments = [

@@ -5,32 +5,63 @@ import DefaultDesignList from "@/components/helpers/Lists/DefaultDesignList/Defa
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
 import { formatDate } from "@/components/helpers/helper-functions/format-date";
+import FilterButtons from "@/components/helpers/FilterButtons/FillterButtons";
 
 const TaskList = () => {
   const { myComingDesigns, designLoading, designError } =
     useRequest() as requestContextInterface;
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [activeButton, setActiveButton] = React.useState("all");
 
-  const buttonStyles =
-    "text-gray-700 text-sm w-full sm:w-auto px-2 py-1 text-center dark:text-white-500";
   const settingSearchTerm = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
-  const filteredRequests = myComingDesigns?.filter((request) => {
+
+  const [isSorted, setIsSorted] = React.useState(false);
+  // sort designs by date
+  const sortedDesigns = myComingDesigns?.sort((a, b) => {
+    return isSorted
+      ? a.createdAt > b.createdAt
+        ? -1
+        : 1
+      : a.createdAt < b.createdAt
+      ? -1
+      : 1;
+  });
+  const filteredRequests = sortedDesigns?.filter((request) => {
     const requestTitle = request.title.toLowerCase();
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.updatedAt).toLowerCase();
     const requestAm = request.amName.toLowerCase();
-    return activeButton !== "all"
-      ? request.designStatus === activeButton &&
-          (requestTitle.includes(searchTermFixed) ||
-            formattedDate.includes(searchTermFixed) ||
-            requestAm.includes(searchTermFixed))
-      : requestTitle.includes(searchTermFixed) ||
-          formattedDate.includes(searchTermFixed) ||
-          requestAm.includes(searchTermFixed);
+    const designStatus = request.designStatus.toLowerCase();
+    return (
+      requestTitle.includes(searchTermFixed) ||
+      formattedDate.includes(searchTermFixed) ||
+      requestAm.includes(searchTermFixed) ||
+      designStatus.includes(searchTermFixed)
+    );
   });
+  const segments = [
+    {
+      name: "",
+      buttonTitle: "All Tasks",
+    },
+    {
+      name: "pending",
+      buttonTitle: "Pending Tasks",
+    },
+    {
+      name: "ongoing",
+      buttonTitle: "Ongoing Tasks",
+    },
+    {
+      name: "waiting for approval",
+      buttonTitle: "Waiting Manager Approval",
+    },
+    {
+      name: "approved",
+      buttonTitle: "Approved",
+    },
+  ];
 
   return (
     <div className={"mx-auto my-10 flex flex-col items-center gap-10 w-full"}>
@@ -45,64 +76,12 @@ const TaskList = () => {
           filter={settingSearchTerm}
         />
       </div>
-      <div className={"w-6/12 flex flex-row justify-around"}>
-        <button
-          type="submit"
-          className={
-            buttonStyles +
-            " " +
-            (activeButton === "all" && "text-primary-500 underline")
-          }
-          onClick={() => setActiveButton("all")}
-        >
-          All Tasks
-        </button>
-        <button
-          type="submit"
-          className={
-            buttonStyles +
-            " " +
-            (activeButton === "pending" && "text-primary-500 underline")
-          }
-          onClick={() => setActiveButton("pending")}
-        >
-          Pending Tasks
-        </button>
-        <button
-          type="submit"
-          className={
-            buttonStyles +
-            " " +
-            (activeButton === "ongoing" && "text-primary-500 underline")
-          }
-          onClick={() => setActiveButton("ongoing")}
-        >
-          Ongoing Tasks
-        </button>
-        <button
-          type="submit"
-          className={
-            buttonStyles +
-            " " +
-            (activeButton === "waiting for approval" &&
-              "text-primary-500 underline")
-          }
-          onClick={() => setActiveButton("waiting for approval")}
-        >
-          Finished Tasks
-        </button>
-        <button
-          type="submit"
-          className={
-            buttonStyles +
-            " " +
-            (activeButton === "approved" && "text-primary-500 underline")
-          }
-          onClick={() => setActiveButton("approved")}
-        >
-          Approved Tasks
-        </button>
-      </div>
+      <FilterButtons
+        setActiveButton={setSearchTerm}
+        segments={segments}
+        isSorted={isSorted}
+        setIsSorted={setIsSorted}
+      />
       {designLoading && <LoadingSpinner />}
       {designLoading && (
         <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
