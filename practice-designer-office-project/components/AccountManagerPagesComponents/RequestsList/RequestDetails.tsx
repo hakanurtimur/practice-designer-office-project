@@ -19,9 +19,7 @@ const RequestDetails: React.FC<{
       itemId={props.requestId}
       title1={"Request"}
       title2={"List"}
-      role={"Request"}
       item={request}
-      waitingForContent={"Waiting for design."}
     />
   );
 };

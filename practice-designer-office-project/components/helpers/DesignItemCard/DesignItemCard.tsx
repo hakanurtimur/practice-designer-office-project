@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { formatDateTime } from "@/components/helpers/helper-functions/format-date";
 import { DocumentData } from "@firebase/firestore";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
@@ -7,19 +7,55 @@ import { useRequest } from "@/context/request-context";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
 import FinishTaskForm from "@/components/helpers/FinishTaskForm/FinishTaskForm";
 import Link from "next/link";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const DesignItemCard: React.FC<{
   itemId: string | string[] | undefined;
   item: DocumentData | undefined;
 }> = (props) => {
   const [activeTab, setActiveTab] = React.useState("details");
-
+  // req context
   const { acceptDesign, creatingError, creatingLoading } =
     useRequest() as requestContextInterface;
+  // notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
+
   if (!props.item) return <LoadingSpinner />;
+
+  const acceptDesignHandler = async () => {
+    await showNotification({
+      title: "Loading",
+      message: "Accepting design...",
+      status: "loading",
+    });
+    await acceptDesign(props.itemId as string);
+
+    await showNotification({
+      title: "Success",
+      message:
+        "Design accepted successfully, you can find it in the task process.",
+      status: "success",
+    });
+  };
+
+  useEffect(() => {
+    if (creatingError) {
+      showNotification({
+        title: "Error",
+        message: creatingError.message,
+        status: "error",
+      });
+    }
+  }, [creatingError]);
+
   return (
     <>
       <div className={"mt-10 w-full"}>
+        {creatingLoading && (
+          <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+        )}
         <h1 className={`font-bold text-center text-primary-600 text-2xl`}>
           Design{" "}
           <span className={`font-bold text-primary-300 text-2x1`}>Details</span>
@@ -126,7 +162,7 @@ const DesignItemCard: React.FC<{
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Managers Brief:
             </p>
-            <p className="mb-3 text-gray-800 text-sm dark:text-gray-400">
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
               {props.item.amNote}
             </p>
             {props.item.designStatus === "pending" ? (
@@ -145,7 +181,7 @@ const DesignItemCard: React.FC<{
                   focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm w-full
                   sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
                   dark:focus:ring-primary-800 mt-3"
-                    onClick={() => acceptDesign(props.itemId as string)}
+                    onClick={acceptDesignHandler}
                   >
                     Accept Design
                   </button>
@@ -204,7 +240,7 @@ const DesignItemCard: React.FC<{
                 {/* TODO: add imageURL here if needed */}
                 <SuccessSvg className={"w-5 h-5 text-green-500"} />
                 <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
-                  Your design has been sent. Waiting for review.
+                  Your design has been sent. Waiting for Managers approval.
                 </p>
               </div>
             )}
