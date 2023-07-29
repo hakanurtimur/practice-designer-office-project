@@ -49,9 +49,12 @@ const DefaultDetailsCard: React.FC<{
   const handleReject = async () => {
     if (!revisionNoteRef.current) return;
     const note = revisionNoteRef.current.value;
-    if (!note) {
-      setRejecting(false);
-      return;
+    if (!note || note.trim.length === 0) {
+      return showNotification({
+        title: "Error",
+        message: "Please add your new description.",
+        status: "error",
+      });
     }
     await showNotification({
       title: "Loading",
@@ -138,8 +141,17 @@ const DefaultDetailsCard: React.FC<{
             id="details"
           >
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {props.item.title}
+              Main Details
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find your requests main details here.
+            </p>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Request Title:
+            </p>
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+              {props.item.title}
+            </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Your Description:
             </p>
@@ -168,6 +180,10 @@ const DefaultDetailsCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Review Actions
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              When your requests design process end you can approve or reject
+              design here.
+            </p>
             {props.item.reqStatus === "pending" ? (
               <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
                 There is no available actions for this request. Waiting for send
@@ -251,9 +267,8 @@ const DefaultDetailsCard: React.FC<{
                           border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
                           dark:border-gray-600 dark:placeholder-gray-400
                           dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Add your brief here..."
                         ref={revisionNoteRef}
-                        defaultValue={
+                        placeholder={
                           "Your old brief:" + "\n" + props.item.description
                         }
                       ></textarea>
