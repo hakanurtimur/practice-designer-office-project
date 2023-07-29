@@ -5,6 +5,7 @@ import DefaultRequestList from "@/components/helpers/Lists/DefaultRequestList/De
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import SearchBar from "@/components/helpers/SearchBar/SearchBar";
 import { formatDate } from "../../helpers/helper-functions/format-date";
+import FilterButtons from "@/components/helpers/FilterButtons/FillterButtons";
 
 const ComingRequestList = () => {
   const { myComingRequests, loading, error } =
@@ -13,7 +14,18 @@ const ComingRequestList = () => {
   const settingSearchTerm = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
-  const filteredRequests = myComingRequests?.filter((request) => {
+  const [isSorted, setIsSorted] = React.useState(false);
+  // sort designs by date
+  const sortedRequests = myComingRequests?.sort((a, b) => {
+    return isSorted
+      ? a.updatedAt > b.updatedAt
+        ? -1
+        : 1
+      : a.updatedAt < b.updatedAt
+      ? -1
+      : 1;
+  });
+  const filteredRequests = sortedRequests?.filter((request) => {
     const requestTitle = request.title.toLowerCase();
     const searchTermFixed = searchTerm.toLowerCase();
     const formattedDate = formatDate(request.createdAt).toLowerCase();
@@ -24,6 +36,28 @@ const ComingRequestList = () => {
       reqStatus.includes(searchTermFixed)
     );
   });
+  const segments = [
+    {
+      name: "",
+      buttonTitle: "All Requests",
+    },
+    {
+      name: "pending",
+      buttonTitle: "Pending Requests",
+    },
+    {
+      name: "Sent to Designer",
+      buttonTitle: "Sent Requests",
+    },
+    {
+      name: "waiting for review",
+      buttonTitle: "Waiting Your Review",
+    },
+    {
+      name: "approved",
+      buttonTitle: "Approved Requests",
+    },
+  ];
 
   return (
     <div className={"mx-auto my-10 flex flex-col items-center gap-10 w-full"}>
@@ -38,6 +72,12 @@ const ComingRequestList = () => {
           filter={settingSearchTerm}
         />
       </div>
+      <FilterButtons
+        setActiveButton={setSearchTerm}
+        segments={segments}
+        isSorted={isSorted}
+        setIsSorted={setIsSorted}
+      />
       {loading && <LoadingSpinner />}
       {loading && (
         <div className="absolute inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>

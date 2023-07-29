@@ -244,7 +244,7 @@ const DesignAmItemCard: React.FC<{
               <p>Error</p>
             ) : props.item.designStatus === "approved" ? (
               <div className={"flex flex-col items-center gap-3 w-full mt-5"}>
-                <div className={"flex row items-start gap-2"}>
+                <div className={"flex self-start row items-start gap-2"}>
                   <SuccessSvg className={"w-5 h-5 text-green-500"} />
                   <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
                     This design has been approved by you and sent to the client.
