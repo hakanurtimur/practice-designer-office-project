@@ -123,8 +123,17 @@ const DesignItemCard: React.FC<{
             id="details"
           >
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {props.item.title}
+              Main Details
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find designs main details here.
+            </p>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Design Title:
+            </p>
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+              {props.item.title}
+            </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Sent at:
             </p>
@@ -153,6 +162,9 @@ const DesignItemCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Brief
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find managers brief and clients description here.
+            </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Clients Description:
             </p>
@@ -213,6 +225,9 @@ const DesignItemCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Task Process
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              When you accept design, you can find task process here.
+            </p>
             {props.item.designStatus === "ongoing" ? (
               <FinishTaskForm designId={props.itemId as string} />
             ) : props.item.designStatus === "pending" ? (
