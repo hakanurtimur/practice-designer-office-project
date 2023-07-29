@@ -20,8 +20,27 @@ const TaskToDesignForm: React.FC<{
     e.preventDefault();
     const brief = briefRef.current?.value;
     const designer = designerRef.current?.value;
-    if (!brief || !designer) return;
-    console.log(brief, designer);
+    if (!brief || !designer) {
+      return showNotification({
+        title: "Error",
+        message: "Please add brief and select a designer.",
+        status: "error",
+      });
+    }
+    if (brief.trim().length < 0) {
+      return showNotification({
+        title: "Error",
+        message: "Please add brief.",
+        status: "error",
+      });
+    }
+    if (designer.trim().length < 0) {
+      return showNotification({
+        title: "Error",
+        message: "Please select a designer.",
+        status: "error",
+      });
+    }
     await showNotification({
       title: "Loading",
       message: "Sending request to designer...",
@@ -67,6 +86,7 @@ const TaskToDesignForm: React.FC<{
         dark:focus:border-primary-500"
         ref={designerRef}
       >
+        <option value={""}>Select a designer</option>
         <option value={"RWy862mpirUUeI5g3HZd12QzBb32"}>Designer 1</option>
         <option value={"RWy862mpirUUeI5g3HZd12QzBb32"}>Designer 2</option>
       </select>

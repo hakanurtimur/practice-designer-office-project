@@ -30,9 +30,12 @@ const DesignAmItemCard: React.FC<{
   const rejectHandler = async () => {
     if (!briefRef.current) return;
     const brief = briefRef.current.value;
-    if (!brief) {
-      setRejecting(false);
-      return;
+    if (!brief || brief.trim().length === 0) {
+      return showNotification({
+        status: "error",
+        title: "Error",
+        message: "Brief can not be empty",
+      });
     }
     await showNotification({
       status: "loading",
@@ -105,7 +108,7 @@ const DesignAmItemCard: React.FC<{
             dark:hover:bg-gray-700 dark:hover:text-gray-300`}
               onClick={() => setActiveTab("details")}
             >
-              Design Details
+              Main Details
             </button>
           </li>
           <li className="mr-2">
@@ -146,8 +149,17 @@ const DesignAmItemCard: React.FC<{
             id="details"
           >
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {props.item.title}
+              Main Details
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find designs main details here.
+            </p>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Request Title:
+            </p>
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+              {props.item.title}
+            </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Clients Name:
             </p>
@@ -188,6 +200,10 @@ const DesignAmItemCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Explanation
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find clients description, your brief and designers note
+              here.
+            </p>
             <h3 className="mb-2 text-primary-500 dark:text-white">
               Clients Description:
             </h3>
@@ -218,6 +234,9 @@ const DesignAmItemCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Approval Process
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You approve or reject designs here.
+            </p>
             {/* TODO: add imageURL here if needed */}
             {creatingLoading ? (
               <LoadingSpinner />
@@ -334,10 +353,9 @@ const DesignAmItemCard: React.FC<{
                           border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
                           dark:border-gray-600 dark:placeholder-gray-400
                           dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                          placeholder="Add your brief here..."
                           ref={briefRef}
-                          defaultValue={
-                            "Your old brief:" + "\n" + props.item.amNote
+                          placeholder={
+                            "Your previous brief:" + "\n" + props.item.amNote
                           }
                         ></textarea>
                       </form>
@@ -380,3 +398,4 @@ export default DesignAmItemCard;
 // todo: Add sent at date and all process dates to the design item
 // todo: plan the object of reqs and designs etc. add designer name to the design object, remove unnecessary fields from the design object
 // todo: add ux for details which use refs really !
+// todo: fix profile update

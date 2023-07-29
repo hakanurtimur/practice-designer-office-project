@@ -99,8 +99,17 @@ const DefaultDetailsCard: React.FC<{
             id="details"
           >
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {props.item.title}
+              Main Details
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can find requests main details here.
+            </p>
+            <p className="mb-2 text-primary-500 dark:text-primary-500">
+              Request title:
+            </p>
+            <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+              {props.item.title}
+            </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
               Clients Description:
             </p>
@@ -135,11 +144,11 @@ const DefaultDetailsCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Employment Actions
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              You can send this request to designer with your brief.
+            </p>
             {props.item.reqStatus === "pending" ? (
               <>
-                <p className="mb-2 italic text-gray-500 text-sm dark:text-gray-400">
-                  You can send this request to designer with your brief.
-                </p>
                 <TaskToDesignForm reqId={props.itemId as string} />
               </>
             ) : props.item.reqStatus === "Sent to designer" ? (
@@ -150,7 +159,7 @@ const DefaultDetailsCard: React.FC<{
                 <p className="mb-2 text-gray-500 text-sm dark:text-gray-400">
                   This item sent to designer (Designer 1) at{" "}
                   {props.item.updatedAt && formatDateTime(props.item.updatedAt)}
-                  ). Waiting for design process.
+                  . Waiting for design process.
                 </p>
                 <p className="mb-2 text-gray-500 text-sm dark:text-gray-400">
                   For more information please go to{" "}
@@ -203,6 +212,10 @@ const DefaultDetailsCard: React.FC<{
             <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Client Approval
             </h2>
+            <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
+              When designer finish the design, and you approve it, you can see
+              clients approval process here.
+            </p>
             {props.item.reqStatus === "waiting for review" ||
             props.item.reqStatus === "approved" ? (
               <div className={"flex flex-col items-center gap-3 w-full mt-5"}>
