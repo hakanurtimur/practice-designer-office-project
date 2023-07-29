@@ -129,6 +129,10 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     (user) => user.assignedAmId === "flmqC1a8dQSZo3g8pYxqNxkUX8R2",
   );
 
+  const selectUser = (id: string) => {
+    return allUsers?.find((user) => user.id === id);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -162,6 +166,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         getUserRole,
         // all users for admin
         allUsers,
+        // select user for admin and AM
+        selectUser,
         // assigned users for AM
         myAssignedUsers,
       }}

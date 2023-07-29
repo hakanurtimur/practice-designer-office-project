@@ -25,6 +25,7 @@ const AssignedUsersList = () => {
         email: user.email,
         imageSrc: user.photoURL,
         assignedAmName: user.assignedAmName,
+        id: user.id,
       };
     });
 
@@ -52,7 +53,11 @@ const AssignedUsersList = () => {
         <SearchBar {...searchBarProps} filter={settingSearchTerm} />
       </div>
       <div className={"w-8/12"}>
-        <DefaultUserList searchTerm={searchTerm} users={filteredUsers} />
+        <DefaultUserList
+          role={"am"}
+          searchTerm={searchTerm}
+          users={filteredUsers}
+        />
       </div>
     </div>
   );

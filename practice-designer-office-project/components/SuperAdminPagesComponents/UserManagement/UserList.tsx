@@ -25,6 +25,7 @@ const UserList = () => {
         email: user.email,
         assignedAmName: user.assignedAmName,
         imageSrc: user.photoURL,
+        id: user.id,
       };
     });
 
@@ -52,7 +53,11 @@ const UserList = () => {
         <SearchBar {...searchBarProps} filter={settingSearchTerm} />
       </div>
       <div className={"w-8/12"}>
-        <DefaultUserList searchTerm={searchTerm} users={filteredUsers} />
+        <DefaultUserList
+          role={"admin"}
+          searchTerm={searchTerm}
+          users={filteredUsers}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,12 @@
 import React from "react";
 import AssignedUserDetail from "@/components/AccountManagerPagesComponents/AssignedUsersComponents/AssignedUserDetail";
+import { useRouter } from "next/router";
 
 const AssignedUserDetailPage = () => {
-  return <AssignedUserDetail />;
+  const router = useRouter();
+  const { userId } = router.query;
+
+  return <AssignedUserDetail userId={userId} />;
 };
 
 export default AssignedUserDetailPage;

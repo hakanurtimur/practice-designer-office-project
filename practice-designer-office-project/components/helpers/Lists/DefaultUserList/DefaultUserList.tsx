@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const DefaultUserList: React.FC<{
   users:
@@ -7,9 +8,11 @@ const DefaultUserList: React.FC<{
         email: string;
         imageSrc: string;
         assignedAmName: string;
+        id: string;
       }[]
     | undefined;
   searchTerm: string;
+  role: string;
 }> = (props) => {
   const { users } = props;
   if (!users) {
@@ -83,7 +86,7 @@ const DefaultUserList: React.FC<{
                   )}
                 </p>
               </div>
-              <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              <div className="flex flex-col items-center text-sm text-gray-600 dark:text-white">
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                   {user.assignedAmName
                     .toLowerCase()
@@ -108,6 +111,14 @@ const DefaultUserList: React.FC<{
                     user.assignedAmName
                   )}
                 </p>
+                <Link
+                  href={`/${props.role}/${
+                    props.role === "am" ? "assigned-users" : "user-management"
+                  }/${user.id}`}
+                  className={"justify-self-end text-primary-500"}
+                >
+                  Details
+                </Link>
               </div>
             </div>
           </li>
