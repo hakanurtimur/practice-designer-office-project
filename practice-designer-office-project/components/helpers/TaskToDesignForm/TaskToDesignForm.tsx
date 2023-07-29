@@ -1,11 +1,16 @@
 import React from "react";
 import { useRequest } from "@/context/request-context";
 import { requestContextInterface } from "@/interfaces/request-context-interface";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const TaskToDesignForm: React.FC<{
   reqId: string;
 }> = (props) => {
+  // context
   const { acceptRequest } = useRequest() as requestContextInterface;
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
 
   // refs
   const briefRef = React.useRef<HTMLTextAreaElement>(null);
@@ -17,7 +22,17 @@ const TaskToDesignForm: React.FC<{
     const designer = designerRef.current?.value;
     if (!brief || !designer) return;
     console.log(brief, designer);
+    await showNotification({
+      title: "Loading",
+      message: "Sending request to designer...",
+      status: "loading",
+    });
     await acceptRequest(props.reqId, brief, designer);
+    await showNotification({
+      title: "Success",
+      message: "Request sent to designer.",
+      status: "success",
+    });
   };
   return (
     <form onSubmit={submitHandler}>

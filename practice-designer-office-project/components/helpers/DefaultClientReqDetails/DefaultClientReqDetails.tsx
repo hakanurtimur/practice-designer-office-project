@@ -188,7 +188,7 @@ const DefaultDetailsCard: React.FC<{
               </div>
             ) : (
               <div className={"w-full h-full flex items-center flex-col"}>
-                <h3 className="block mb-2 text-sm font-medium text-primary-500 dark:text-white">
+                <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
                   Design Image
                 </h3>
                 <img
@@ -242,7 +242,7 @@ const DefaultDetailsCard: React.FC<{
                         htmlFor="note"
                         className="block mb-2 text-sm font-medium text-primary-500 dark:text-white"
                       >
-                        Add Your Note
+                        Update Your Note
                       </label>
                       <textarea
                         id="note"
@@ -253,6 +253,9 @@ const DefaultDetailsCard: React.FC<{
                           dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Add your brief here..."
                         ref={revisionNoteRef}
+                        defaultValue={
+                          "Your old brief:" + "\n" + props.item.description
+                        }
                       ></textarea>
                     </form>
                     <button

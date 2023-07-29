@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { formatDateTime } from "@/components/helpers/helper-functions/format-date";
 import { DocumentData } from "@firebase/firestore";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
@@ -6,6 +6,8 @@ import { requestContextInterface } from "@/interfaces/request-context-interface"
 import { useRequest } from "@/context/request-context";
 import Link from "next/link";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const DesignAmItemCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -17,10 +19,14 @@ const DesignAmItemCard: React.FC<{
   // states
   const [activeTab, setActiveTab] = React.useState("details");
   const [rejecting, setRejecting] = React.useState(false);
+  const [imageIsOpen, setImageIsOpen] = React.useState(false);
   const briefRef = React.useRef<HTMLTextAreaElement>(null);
   if (!props.item) return <LoadingSpinner />;
-  // functions
+  //notification context
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
 
+  // functions
   const rejectHandler = async () => {
     if (!briefRef.current) return;
     const brief = briefRef.current.value;
@@ -28,16 +34,51 @@ const DesignAmItemCard: React.FC<{
       setRejecting(false);
       return;
     }
+    await showNotification({
+      status: "loading",
+      title: "Sending to designer",
+      message: "Design is sending to designer with your updated brief...",
+    });
     await rejectDesign(props.itemId as string, brief);
     setRejecting(false);
+    await showNotification({
+      status: "info",
+      title: "Design sent back to designer",
+      message:
+        "Design is sent back to designer successfully. You can see it in design list. Waiting for designer process now.",
+    });
   };
 
   const approveHandler = async () => {
+    await showNotification({
+      status: "loading",
+      title: "Sending to client",
+      message: "Design is sending to client...",
+    });
     await approveDesign(props.itemId as string);
+    await showNotification({
+      status: "info",
+      title: "Design sent to client",
+      message:
+        "Design is sent to client successfully. You can see it in request list. Waiting for client approval now.",
+    });
   };
+
+  useEffect(() => {
+    if (creatingError) {
+      showNotification({
+        status: "error",
+        title: "Error",
+        message: creatingError.message,
+      });
+    }
+  }, [creatingError]);
   return (
     <>
       <div className={"mt-10 w-full"}>
+        {creatingLoading && (
+          <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+        )}
         <h1 className={`font-bold text-center text-primary-600 text-2xl`}>
           Design{" "}
           <span className={`font-bold text-primary-300 text-2x1`}>Process</span>
@@ -183,11 +224,54 @@ const DesignAmItemCard: React.FC<{
             ) : creatingError ? (
               <p>Error</p>
             ) : props.item.designStatus === "approved" ? (
-              <div className={"flex row items-start gap-2"}>
-                <SuccessSvg className={"w-5 h-5 text-green-500"} />
-                <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
-                  This design has been approved by you and sent to the client.
-                </p>
+              <div className={"flex flex-col items-center gap-3 w-full mt-5"}>
+                <div className={"flex row items-start gap-2"}>
+                  <SuccessSvg className={"w-5 h-5 text-green-500"} />
+                  <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+                    This design has been approved by you and sent to the client.
+                    You can follow client approval from{" "}
+                    <Link
+                      className={"text-primary-500"}
+                      href={`/am/request-list/${props.item.id}`}
+                    >
+                      request detail.
+                    </Link>
+                  </p>
+                </div>
+                {!imageIsOpen ? (
+                  <button
+                    onClick={() => {
+                      setImageIsOpen(true);
+                    }}
+                    className="hover:text-primary-500 
+                text-sm text-gray-400 mt-1"
+                  >
+                    Show Design
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setImageIsOpen(false);
+                      }}
+                      className="hover:text-primary-500 
+                text-sm text-gray-400 mt-1"
+                    >
+                      Hide Design
+                    </button>
+                    <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
+                      Design Image
+                    </h3>
+                    <img
+                      src={"/default-img.png"}
+                      alt={"default image"}
+                      className={"w-6/12 h-6/12"}
+                    />
+                    <button className="hover:text-primary-500 text-sm text-gray-400 mt-3">
+                      Click for download
+                    </button>
+                  </>
+                )}
               </div>
             ) : props.item.designStatus !== "waiting for approval" ? (
               <div className={"flex row items-start gap-2"}>
@@ -196,29 +280,18 @@ const DesignAmItemCard: React.FC<{
                 </p>
               </div>
             ) : (
-              <div
-                className={
-                  "flex flex-col lg:flex-row items-start gap-10 w-full mt-5"
-                }
-              >
-                <div className={"w-full h-full flex flex-col"}>
-                  <h3 className="block mb-2 text-sm font-medium text-primary-500 dark:text-white">
-                    Design Image
-                  </h3>
-                  <img
-                    src={"/default-img.png"}
-                    alt={"default image"}
-                    className={"w-8/12 h-8/12"}
-                  />
-                  <button
-                    className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4
-                  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm w-full
-                  sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
-                  dark:focus:ring-primary-800 mt-5 self-start"
-                  >
-                    Download Image
-                  </button>
-                </div>
+              <div className={"flex flex-col items-center gap-3 w-full mt-5"}>
+                <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
+                  Design Image
+                </h3>
+                <img
+                  src={"/default-img.png"}
+                  alt={"default image"}
+                  className={"w-6/12 h-6/12"}
+                />
+                <button className="hover:text-primary-500 text-sm text-gray-400 mt-3">
+                  Click for download
+                </button>
                 <div
                   className={
                     "flex flex-col-reverse w-full self-end items-end justify-end"
@@ -252,7 +325,7 @@ const DesignAmItemCard: React.FC<{
                           htmlFor="brief"
                           className="block mb-2 text-sm font-medium text-primary-500 dark:text-white"
                         >
-                          Add Your Brief
+                          Update Your Brief
                         </label>
                         <textarea
                           id="brief"
@@ -263,16 +336,25 @@ const DesignAmItemCard: React.FC<{
                           dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Add your brief here..."
                           ref={briefRef}
+                          defaultValue={
+                            "Your old brief:" + "\n" + props.item.amNote
+                          }
                         ></textarea>
                       </form>
                       <button
                         className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4
-                  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm w-full
+                  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm
                   sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
                   dark:focus:ring-primary-800 mt-3 w-1/2 self-end"
                         onClick={rejectHandler}
                       >
-                        Reject And Add Brief
+                        Reject And Update Brief
+                      </button>
+                      <button
+                        className="hover:text-primary-500 text-sm text-gray-400 self-end mt-3"
+                        onClick={() => setRejecting(false)}
+                      >
+                        Back
                       </button>
                     </div>
                   )}
