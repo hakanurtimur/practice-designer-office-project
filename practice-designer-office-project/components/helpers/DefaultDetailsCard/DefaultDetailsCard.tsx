@@ -26,6 +26,10 @@ const DefaultDetailsCard: React.FC<{
   return (
     <>
       <div className={"mt-10 w-full"}>
+        {creatingLoading && <LoadingSpinner />}
+        {creatingLoading && (
+          <div className="fixed inset-0 bg-overlay bg-gray-950 opacity-30 z-40"></div>
+        )}
         <h1 className={`font-bold text-center text-primary-600 text-2xl`}>
           {props.title1}{" "}
           <span className={`font-bold text-primary-300 text-2x1`}>
@@ -159,7 +163,9 @@ const DefaultDetailsCard: React.FC<{
                 </p>
               </>
             ) : creatingLoading ? (
-              <LoadingSpinner />
+              <>
+                <LoadingSpinner />
+              </>
             ) : creatingError ? (
               <div className="flex items-center justify-center">
                 <p className="text-red-500 text-sm font-medium">
@@ -278,3 +284,4 @@ const DefaultDetailsCard: React.FC<{
 export default DefaultDetailsCard;
 
 // todo: add all create times !!! (design, request, task) add dates to all items!!
+// add fixed loading spinner to all details secitons (design, request, task)
