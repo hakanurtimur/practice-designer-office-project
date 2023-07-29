@@ -307,6 +307,5 @@ const DefaultDetailsCard: React.FC<{
 };
 
 export default DefaultDetailsCard;
-// todo: fix am request details
 
 // todo: when download design add notifications on them, do same for profile image uploading states

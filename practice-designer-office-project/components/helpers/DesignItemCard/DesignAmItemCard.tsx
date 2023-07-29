@@ -185,10 +185,10 @@ const DesignAmItemCard: React.FC<{
               {props.item.designStatus.toUpperCase()}
             </p>
             <p className="mb-2 text-primary-500 dark:text-primary-500">
-              Designed By:
+              Designer On Duty:
             </p>
             <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
-              {props.item.designerId}
+              {props.item.designerName}
             </p>
           </div>
           <div
@@ -385,7 +385,7 @@ const DesignAmItemCard: React.FC<{
               "flex flex-row justify-end m-3 hover:text-primary-500 text-sm text-gray-400"
             }
           >
-            <Link href={"/am/design-approval"}> Back to Designs</Link>
+            <Link href={"/am/design-approval"}> Back to Designs Approval</Link>
           </div>
         </div>
       </div>
@@ -394,8 +394,3 @@ const DesignAmItemCard: React.FC<{
 };
 
 export default DesignAmItemCard;
-
-// todo: Add sent at date and all process dates to the design item
-// todo: plan the object of reqs and designs etc. add designer name to the design object, remove unnecessary fields from the design object
-// todo: add ux for details which use refs really !
-// todo: fix profile update

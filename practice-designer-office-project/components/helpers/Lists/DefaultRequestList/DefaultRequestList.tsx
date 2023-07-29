@@ -141,5 +141,3 @@ const DefaultRequestList: React.FC<{
 };
 
 export default DefaultRequestList;
-
-// TODO: add refresh button

@@ -58,6 +58,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       amNote: null,
       designerId: null,
       designerNote: null,
+      designerName: null,
       imgUrl: null,
       createdAt: serverTimestamp(),
       updatedAt: null,
@@ -132,6 +133,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     requestId: string,
     amNote: string,
     designerId: string,
+    designerName: string,
   ) => {
     if (!user || !user.uid) return;
     const req = selectRequest(requestId);
@@ -144,6 +146,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       designerId: designerId,
       updatedAt: serverTimestamp(),
       designStatus: "pending",
+      designerName: designerName,
     };
     try {
       await updateDoc(doc(collectionRef, req.id), updatedRequest);
@@ -301,3 +304,5 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export { RequestProvider, useRequest };
+
+// TODO: all process can be date based ?? IDK

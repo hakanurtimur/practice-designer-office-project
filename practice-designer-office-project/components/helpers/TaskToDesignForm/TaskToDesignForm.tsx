@@ -20,6 +20,7 @@ const TaskToDesignForm: React.FC<{
     e.preventDefault();
     const brief = briefRef.current?.value;
     const designer = designerRef.current?.value;
+    const designerName = "Default Designer"; // !!! this will be dynamic
     if (!brief || !designer) {
       return showNotification({
         title: "Error",
@@ -46,7 +47,7 @@ const TaskToDesignForm: React.FC<{
       message: "Sending request to designer...",
       status: "loading",
     });
-    await acceptRequest(props.reqId, brief, designer);
+    await acceptRequest(props.reqId, brief, designer, designerName);
     await showNotification({
       title: "Success",
       message: "Request sent to designer.",
@@ -105,3 +106,5 @@ const TaskToDesignForm: React.FC<{
 };
 
 export default TaskToDesignForm;
+
+// todo: add logout notifications

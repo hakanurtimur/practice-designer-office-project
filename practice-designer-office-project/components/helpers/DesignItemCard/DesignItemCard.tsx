@@ -275,7 +275,5 @@ const DesignItemCard: React.FC<{
 
 export default DesignItemCard;
 
-// TODO: Add notifications
 // TODO: Add upload image for pp s and tasks
-// TODO: add success svg to all success messages and adding back button for details
-// TODO: for dynamic sections we will add protecting system
+// TODO: for dynamic sections we will add protecting system so plan a 404 page !

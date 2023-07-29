@@ -295,6 +295,3 @@ const DefaultDetailsCard: React.FC<{
 };
 
 export default DefaultDetailsCard;
-
-// todo: add all create times !!! (design, request, task) add dates to all items!!
-// add fixed loading spinner to all details secitons (design, request, task)

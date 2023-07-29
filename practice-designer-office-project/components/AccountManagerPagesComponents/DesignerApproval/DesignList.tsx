@@ -67,10 +67,8 @@ const DesignList = () => {
   return (
     <div className={"mx-auto my-10 flex flex-col items-center gap-10 w-full"}>
       <h1 className={`font-bold text-primary-600  text-2xl`}>
-        Designs{" "}
-        <span className={`font-bold text-primary-300 text-2x1`}>
-          On Process
-        </span>
+        Design{" "}
+        <span className={`font-bold text-primary-300 text-2x1`}>Approval</span>
       </h1>
       <div className={"w-8/12"}>
         <SearchBar
@@ -106,6 +104,3 @@ const DesignList = () => {
 };
 
 export default DesignList;
-
-// TODO: maybe we can sort the requests and designs by date
-// Todo: maybe we can add designer name

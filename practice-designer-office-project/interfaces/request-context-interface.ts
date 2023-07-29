@@ -24,6 +24,7 @@ export interface requestContextInterface {
     id: string,
     amNote: string,
     designerId: string,
+    designerName: string,
   ) => Promise<void>;
   approveDesign: (designId: string) => Promise<void>;
   rejectDesign: (designId: string, amNote: string) => Promise<void>;
@@ -57,6 +58,7 @@ export interface requestInterface {
   amNote: string | null;
   designerId: string | null;
   designerNote: string | null;
+  designerName: string | null;
   imgUrl: string | null;
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
