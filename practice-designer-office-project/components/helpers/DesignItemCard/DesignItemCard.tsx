@@ -229,7 +229,10 @@ const DesignItemCard: React.FC<{
               When you accept design, you can find task process here.
             </p>
             {props.item.designStatus === "ongoing" ? (
-              <FinishTaskForm designId={props.itemId as string} />
+              <FinishTaskForm
+                designId={props.itemId as string}
+                clientId={props.item.owner}
+              />
             ) : props.item.designStatus === "pending" ? (
               <div className={"flex flex-row gap-3  mt-5"}>
                 <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">

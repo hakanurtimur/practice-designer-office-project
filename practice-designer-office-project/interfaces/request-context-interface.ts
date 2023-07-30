@@ -38,7 +38,11 @@ export interface requestContextInterface {
   // DESIGNER SIDE
   // --- Functions ---
   acceptDesign: (designId: string) => Promise<void>;
-  finishTask: (designId: string, designerNote: string) => Promise<void>;
+  finishTask: (
+    designId: string,
+    designerNote: string,
+    imgUrl: string,
+  ) => Promise<void>;
   // states
   // --- Variables ---
   myComingDesigns: DocumentData[] | undefined;

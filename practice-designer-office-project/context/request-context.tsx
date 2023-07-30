@@ -232,7 +232,11 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     setCreatingLoading(false);
   };
   // Designer can upload design and finish task
-  const finishTask = async (designId: string, designerNote: string) => {
+  const finishTask = async (
+    designId: string,
+    designerNote: string,
+    imgUrl: string,
+  ) => {
     if (!user || !user.uid) return;
     const design = selectDesign(designId);
     if (!design) return;
@@ -242,7 +246,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       designStatus: "waiting for approval",
       updatedAt: serverTimestamp(),
       designerNote: designerNote,
-      //imageUrl: imageUrl, will be added later
+      imgUrl: imgUrl,
     };
     try {
       await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
