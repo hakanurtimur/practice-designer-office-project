@@ -243,7 +243,6 @@ const DesignAmItemCard: React.FC<{
             <p className="mb-4 italic text-gray-500 text-sm dark:text-gray-400">
               You approve or reject designs here.
             </p>
-            {/* TODO: add imageURL here if needed */}
             {creatingLoading ? (
               <LoadingSpinner />
             ) : creatingError ? (

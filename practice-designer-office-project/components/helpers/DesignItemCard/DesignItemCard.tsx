@@ -259,7 +259,6 @@ const DesignItemCard: React.FC<{
             ) : (
               <div className={"flex flex-col gap-3  mt-5"}>
                 <div className={"flex flex-row gap-3"}>
-                  {/* TODO: add imageURL here if needed */}
                   <SuccessSvg className={"w-5 h-5 text-green-500"} />
                   <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
                     Your design has been sent. Waiting for Managers approval.
@@ -317,5 +316,4 @@ const DesignItemCard: React.FC<{
 
 export default DesignItemCard;
 
-// TODO: Add upload image for pp s and tasks
 // TODO: for dynamic sections we will add protecting system so plan a 404 page !

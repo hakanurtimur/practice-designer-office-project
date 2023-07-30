@@ -156,7 +156,7 @@ const NewRequest = () => {
                 </svg>
                 <span className="sr-only">Upload image</span>
                 {
-                  //TODO add image upload functionality
+
                 }
               </button>*/}
             </div>
@@ -168,5 +168,3 @@ const NewRequest = () => {
 };
 
 export default NewRequest;
-
-//TODO add image upload functionality ??
