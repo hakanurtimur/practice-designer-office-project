@@ -8,6 +8,8 @@ import Link from "next/link";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
 import { useNotification } from "@/context/notification-context";
 import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+import Image from "next/image";
+import DefaultDownloadImage from "@/components/helpers/DefaultDownloadImage/DefaultDownloadImage";
 
 const DesignAmItemCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -21,7 +23,11 @@ const DesignAmItemCard: React.FC<{
   const [rejecting, setRejecting] = React.useState(false);
   const [imageIsOpen, setImageIsOpen] = React.useState(false);
   const briefRef = React.useRef<HTMLTextAreaElement>(null);
+  // file name
   if (!props.item) return <LoadingSpinner />;
+  const fileName = `${props.item.title.replace(" ", "-")}-${
+    props.item.id
+  }-design-image`;
   //notification context
   const { showNotification } =
     useNotification() as notificationContextInterface;
@@ -262,7 +268,7 @@ const DesignAmItemCard: React.FC<{
                     onClick={() => {
                       setImageIsOpen(true);
                     }}
-                    className="hover:text-primary-500 
+                    className="hover:text-primary-500
                 text-sm text-gray-400 mt-1"
                   >
                     Show Design
@@ -273,7 +279,7 @@ const DesignAmItemCard: React.FC<{
                       onClick={() => {
                         setImageIsOpen(false);
                       }}
-                      className="hover:text-primary-500 
+                      className="hover:text-primary-500
                 text-sm text-gray-400 mt-1"
                     >
                       Hide Design
@@ -281,10 +287,11 @@ const DesignAmItemCard: React.FC<{
                     <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
                       Design Image
                     </h3>
-                    <img
-                      src={"/default-img.png"}
+                    <Image
+                      src={props.item.imgUrl}
                       alt={"default image"}
-                      className={"w-6/12 h-6/12"}
+                      width={300}
+                      height={300}
                     />
                     <button className="hover:text-primary-500 text-sm text-gray-400 mt-3">
                       Click for download
@@ -303,14 +310,16 @@ const DesignAmItemCard: React.FC<{
                 <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
                   Design Image
                 </h3>
-                <img
-                  src={"/default-img.png"}
-                  alt={"default image"}
-                  className={"w-6/12 h-6/12"}
+                <Image
+                  src={props.item.imgUrl}
+                  alt={"design image"}
+                  width={300}
+                  height={300}
                 />
-                <button className="hover:text-primary-500 text-sm text-gray-400 mt-3">
-                  Click for download
-                </button>
+                <DefaultDownloadImage
+                  imageUrl={props.item.imgUrl}
+                  fileName={fileName}
+                />
                 <div
                   className={
                     "flex flex-col-reverse w-full self-end items-end justify-end"

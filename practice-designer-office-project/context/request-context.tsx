@@ -175,6 +175,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       designStatus: "approved",
       updatedAt: serverTimestamp(),
       reqStatus: "waiting for review",
+      imgUrl: design.imgUrl,
     };
     try {
       await updateDoc(doc(designCollectionRef, design.id), updatedDesign);
@@ -195,6 +196,7 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
       designStatus: "pending",
       updatedAt: serverTimestamp(),
       amNote: amNote,
+      imgUrl: null,
     };
     try {
       await updateDoc(doc(designCollectionRef, design.id), updatedDesign);

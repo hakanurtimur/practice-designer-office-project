@@ -9,6 +9,7 @@ import FinishTaskForm from "@/components/helpers/FinishTaskForm/FinishTaskForm";
 import Link from "next/link";
 import { useNotification } from "@/context/notification-context";
 import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+import Image from "next/image";
 
 const DesignItemCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -21,6 +22,8 @@ const DesignItemCard: React.FC<{
   // notification context
   const { showNotification } =
     useNotification() as notificationContextInterface;
+  // internal states
+  const [imageIsOpen, setImageIsOpen] = React.useState(false);
 
   if (!props.item) return <LoadingSpinner />;
 
@@ -254,12 +257,48 @@ const DesignItemCard: React.FC<{
                 </p>
               </div>
             ) : (
-              <div className={"flex flex-row gap-3  mt-5"}>
-                {/* TODO: add imageURL here if needed */}
-                <SuccessSvg className={"w-5 h-5 text-green-500"} />
-                <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
-                  Your design has been sent. Waiting for Managers approval.
-                </p>
+              <div className={"flex flex-col gap-3  mt-5"}>
+                <div className={"flex flex-row gap-3"}>
+                  {/* TODO: add imageURL here if needed */}
+                  <SuccessSvg className={"w-5 h-5 text-green-500"} />
+                  <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
+                    Your design has been sent. Waiting for Managers approval.
+                  </p>
+                </div>
+                <div className={"flex flex-col items-start self-start gap-3"}>
+                  {props.item.imgUrl && !imageIsOpen ? (
+                    <button
+                      onClick={() => {
+                        setImageIsOpen(true);
+                      }}
+                      className="hover:text-primary-500
+                text-sm text-gray-400 mt-1"
+                    >
+                      Show Design
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setImageIsOpen(false);
+                        }}
+                        className="hover:text-primary-500
+                text-sm text-gray-400 mt-1"
+                      >
+                        Hide Design
+                      </button>
+                      <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
+                        Design Image
+                      </h3>
+                      <Image
+                        src={props.item.imgUrl}
+                        alt={"default image"}
+                        width={500}
+                        height={500}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </div>
