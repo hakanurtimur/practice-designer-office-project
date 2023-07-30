@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import Link from "next/link";
+import Image from "next/image";
 
 const DefaultProfile: React.FC<{
   userRole: string;
@@ -11,10 +12,12 @@ const DefaultProfile: React.FC<{
   return (
     <div className="mx-auto w-full mt-10 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex flex-col items-center mt-10 pb-10">
-        <img
+        <Image
           className="w-24 h-24 mb-3 rounded-full shadow-lg"
           src={user?.photoURL || "/user-pen.png"}
           alt="User avatar"
+          width={800}
+          height={800}
         />
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
           {user?.displayName}
