@@ -89,6 +89,18 @@ const DefaultUpdateProfile: React.FC<{
       status: "success",
       title: "Profile updated",
     });
+    console.log(user?.displayName);
+    if (
+      !user?.displayName &&
+      (enteredName.trim().length === 0 || enteredSurname.trim().length === 0)
+    ) {
+      showNotification({
+        message: "Please fill in your names",
+        status: "error",
+        title: "Please fill in your name",
+      });
+      return;
+    }
     await router.push(`/${props.userRole}/profile`);
   };
 
@@ -181,16 +193,18 @@ const DefaultUpdateProfile: React.FC<{
       >
         Submit
       </button>
-      <Link
-        href={`/${props.userRole}/profile`}
-        className="inline-flex items-center px-4 py-2
+      {user?.displayName && (
+        <Link
+          href={`/${props.userRole}/profile`}
+          className="inline-flex items-center px-4 py-2
             text-sm font-medium text-center text-gray-900
             rounded-lg hover:text-primary-600
             dark:text-white
             dark:hover:text-primary-700"
-      >
-        Back
-      </Link>
+        >
+          Back
+        </Link>
+      )}
     </form>
   );
 };

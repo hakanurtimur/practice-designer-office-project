@@ -5,6 +5,7 @@ import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/router";
 import { useNotification } from "@/context/notification-context";
 import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+import Link from "next/link";
 
 const NewRequest = () => {
   // req context
@@ -128,7 +129,17 @@ const NewRequest = () => {
               Create Request
             </button>
             <div className="flex pl-0 space-x-1 sm:pl-2">
-              <button
+              <Link
+                className="inline-flex items-center px-4 py-2
+            text-sm font-medium text-center text-gray-900
+            rounded-lg hover:text-primary-600
+            dark:text-white
+            dark:hover:text-primary-700"
+                href={"/client"}
+              >
+                Back to dashboard
+              </Link>
+              {/*<button
                 type="button"
                 className="inline-flex justify-center items-center p-2 
                 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 
@@ -147,7 +158,7 @@ const NewRequest = () => {
                 {
                   //TODO add image upload functionality
                 }
-              </button>
+              </button>*/}
             </div>
           </div>
         </div>
@@ -158,4 +169,4 @@ const NewRequest = () => {
 
 export default NewRequest;
 
-//TODO add image upload functionality
+//TODO add image upload functionality ??

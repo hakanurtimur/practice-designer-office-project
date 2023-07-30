@@ -8,6 +8,8 @@ import Link from "next/link";
 import SuccessSvg from "@/components/helpers/SuccesSvg/SuccessSvg";
 import { useNotification } from "@/context/notification-context";
 import { notificationContextInterface } from "@/interfaces/notification-context-interface";
+import Image from "next/image";
+import DefaultDownloadImage from "@/components/helpers/DefaultDownloadImage/DefaultDownloadImage";
 
 const DefaultDetailsCard: React.FC<{
   itemId: string | string[] | undefined;
@@ -31,6 +33,9 @@ const DefaultDetailsCard: React.FC<{
     useRequest() as requestContextInterface;
 
   if (!props.item) return <LoadingSpinner />;
+  const fileName = `${props.item.title.replace(" ", "-")}-${
+    props.item.id
+  }-design-image`;
 
   const handleApprove = async () => {
     await showNotification({
@@ -49,7 +54,8 @@ const DefaultDetailsCard: React.FC<{
   const handleReject = async () => {
     if (!revisionNoteRef.current) return;
     const note = revisionNoteRef.current.value;
-    if (!note || note.trim.length === 0) {
+    console.log(note);
+    if (!note || note.trim().length === 0) {
       return showNotification({
         title: "Error",
         message: "Please add your new description.",
@@ -207,10 +213,11 @@ const DefaultDetailsCard: React.FC<{
                 <h3 className="block mb-2 text-lg font-medium text-primary-500 dark:text-white">
                   Design Image
                 </h3>
-                <img
-                  src={"/default-img.png"}
-                  alt={"default image"}
-                  className={"w-6/12 h-6/12"}
+                <Image
+                  src={props.item.imgUrl}
+                  alt={"design image"}
+                  width={300}
+                  height={300}
                 />
                 {props.item.reqStatus === "approved" ? (
                   <>
@@ -221,14 +228,10 @@ const DefaultDetailsCard: React.FC<{
                         Your design is ready!
                       </p>
                     </div>
-                    <button
-                      className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4
-                  focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm w-full
-                  sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700
-                  dark:focus:ring-primary-800 mt-5"
-                    >
-                      Download
-                    </button>
+                    <DefaultDownloadImage
+                      imageUrl={props.item.imgUrl}
+                      fileName={fileName}
+                    />
                   </>
                 ) : !rejecting ? (
                   <div className={"flex flex-row w-1/2 justify-between"}>

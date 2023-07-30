@@ -3,6 +3,7 @@ import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import {
   collection,
+  deleteDoc,
   doc,
   serverTimestamp,
   setDoc,
@@ -99,12 +100,18 @@ const RequestProvider = ({ children }: { children: React.ReactNode }) => {
     const updatedRequest = {
       ...req,
       reqStatus: "pending",
-      updatedAt: serverTimestamp(),
       description: description,
       designStatus: null,
+      designerName: null,
+      designerId: null,
+      designerNote: null,
+      amNote: null,
+      imgUrl: null,
+      createdAt: serverTimestamp(),
     };
     try {
       await updateDoc(doc(collectionRef, req.id), updatedRequest);
+      await deleteDoc(doc(designCollectionRef, req.id));
     } catch (e) {
       setCreatingError(e as FirestoreError);
     }
