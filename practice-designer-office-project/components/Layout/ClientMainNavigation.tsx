@@ -4,9 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/context/auth-context";
 import { authContextInterface } from "@/interfaces/auth-context-interface";
 import LoadingSpinner from "@/components/helpers/LoadingSpinner/LoadingSpinner";
+import { useNotification } from "@/context/notification-context";
+import { notificationContextInterface } from "@/interfaces/notification-context-interface";
 
 const ClientMainNavigation = () => {
   const { signOut, signOutLoading } = useAuth() as authContextInterface;
+  const { showNotification } =
+    useNotification() as notificationContextInterface;
 
   const contentArray = [
     {
@@ -35,8 +39,17 @@ const ClientMainNavigation = () => {
     {
       title: "Sign out",
       function: async () => {
+        await showNotification({
+          title: "Loading",
+          message: "Signing out...",
+          status: "loading",
+        });
         await signOut();
-        await console.log("Sign out");
+        await showNotification({
+          title: "Success",
+          message: "Signed out.",
+          status: "success",
+        });
         if (signOutLoading) {
           return <LoadingSpinner />;
         }

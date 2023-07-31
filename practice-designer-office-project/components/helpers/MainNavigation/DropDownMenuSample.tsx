@@ -15,9 +15,9 @@ const DropDownMenuSample: React.FC<{
   const buttonArray = props.buttonArray;
   const contentList = contentArray.map((item, index) => {
     return (
-      <li key={index}>
+      <li key={index} onClick={props.toggleDropdown}>
         <Link
-          href={`/${item.link}`}
+          href={`${item.link}`}
           className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-50"
         >
           {item.title}
@@ -28,7 +28,7 @@ const DropDownMenuSample: React.FC<{
 
   const buttonList = buttonArray.map((item) => {
     return (
-      <li key={item.id}>
+      <li key={item.id} onClick={props.toggleDropdown}>
         <Link
           href="/"
           type="button"
@@ -42,7 +42,7 @@ const DropDownMenuSample: React.FC<{
     );
   });
   return (
-    <div className="relative md:hidden">
+    <div className="relative md:hidden z-40">
       <button
         type="button"
         onClick={props.toggleDropdown}

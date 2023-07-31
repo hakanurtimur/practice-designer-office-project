@@ -222,7 +222,6 @@ const DefaultDetailsCard: React.FC<{
                 {props.item.reqStatus === "approved" ? (
                   <>
                     <div className={"flex flex-row gap-3  mt-5"}>
-                      {/* TODO: add imageURL here if needed */}
                       <SuccessSvg className={"w-5 h-5 text-green-500"} />
                       <p className="mb-3 text-gray-500 text-sm dark:text-gray-400">
                         Your design is ready!
@@ -310,5 +309,3 @@ const DefaultDetailsCard: React.FC<{
 };
 
 export default DefaultDetailsCard;
-
-// todo: when download design add notifications on them, do same for profile image uploading states
