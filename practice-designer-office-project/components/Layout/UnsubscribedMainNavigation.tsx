@@ -11,14 +11,6 @@ const UnsubscribedMainNavigation = () => {
       title: "Home",
       link: "",
     },
-    {
-      title: "About",
-      link: "",
-    },
-    {
-      title: "Contact",
-      link: "",
-    },
   ];
 
   const buttonArray = [
