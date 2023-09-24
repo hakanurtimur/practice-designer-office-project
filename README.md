@@ -4,6 +4,12 @@ link: https://designerapp-e9867.web.app
 
 **Designer App** allows efficient management of design requests. Clients can create design requests, which are then seamlessly forwarded to account managers and assigned to designers. When designers complete their projects, account managers have the option to approve or reject them. Approved projects are presented to clients for their consideration, where clients can accept or reject the final designs.
 
+
+## Techs
+Next js,
+Tailwind,
+Firebase
+
 ## Features
 
 # Designer App
